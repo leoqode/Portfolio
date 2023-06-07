@@ -1,15 +1,16 @@
-import Header from './components/HeaderComponents/Header'
-import LocationComponent from './components/HeaderComponents/LocationComponent'
-import './App.css'
+import Header from "./components/HeaderComponents/Header";
+import LandingMain from "./components/LandingComponents/LandingMain";
+import "./App.css";
 
 function App() {
-
   return (
-    <>
-    <LocationComponent></LocationComponent>
-    <Header></Header>
-    </>
-  )
+    <div className='app'>
+      <Header style='header' />
+      <div className='intro'>
+        <LandingMain></LandingMain>
+      </div>
+    </div>
+  );
 }
 
-export default App
+export default App;

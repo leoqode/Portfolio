@@ -1,0 +1,15 @@
+*{
+  background-color: #e0bb8e;
+
+}
+.intro{
+  margin: 15% 0% 10% 10%;
+  display: flex;
+  align-items: start;
+  width: 100%;
+}
+.app{
+  background-color: #e0bb8e;
+  height: 100%;
+  width: 100%;
+}

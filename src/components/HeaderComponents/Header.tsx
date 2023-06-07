@@ -1,12 +1,18 @@
-import DateComponent from "./DateComponent"
-const Header = () => {
-  return (
-    <>
-    
-    <div className="Header">Leo</div>
-    <DateComponent/>
-    </>
-  )
+import DateComponent from "./DateComponent";
+import LocationComponent from "./LocationComponent";
+import "./Header.css";
+
+export interface Props {
+  style: string;
 }
 
-export default Header
+const Header = (props: Props) => {
+  return (
+    <div className={props.style}>
+      <DateComponent headerStyle='header-cmps' />
+        <LocationComponent weatherID="header_name_weather" headerStyle='header-cmps' />
+    </div>
+  );
+};
+
+export default Header;

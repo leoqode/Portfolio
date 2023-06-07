@@ -1,0 +1,14 @@
+.header {
+  display: flex;  
+  height: 10%;
+  width: 100%;
+  font-family: 'Jost';
+  color: rgb(2, 0, 0);
+  padding: 20px;
+}
+
+#header_name_weather{
+  position: static;
+  margin-left: auto;
+  font-size: 20px;
+}

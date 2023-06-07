@@ -1,23 +1,50 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
 
-const LocationComponent = () => {
+const postWeatherURL = "https://api.tomorrow.io/v4/timelines";
+const apiKey = "XqcA1V7gG3blEcKCq8nEFNXjDzsBqqSR";
+const location = [42.63496561409271, -73.68988401705542];
+const timesteps = ["current"];
+const startTime = new Date().toISOString();
+
+export interface Props {
+  headerStyle: string,
+  weatherID: string,
+}
+
+const LocationComponent = (props: Props) => {
   const [data, setData] = useState(null);
 
   useEffect(() => {
-    axios
-      .get(
-        "https://api.tomorrow.io/v4/timelines?location=30.2672,97.7431&fields=temperature&timesteps=1h&units=metric&apikey=XqcA1V7gG3blEcKCq8nEFNXjDzsBqqSR"
-      )
-      .then((res) => {
-        setData(res.data);
-      })
-      .catch((err) => {
-        console.error(err);
-      });
+    const fetchData = async () => {
+      try {
+        const response = await axios.post(
+          `${postWeatherURL}?apikey=${apiKey}`,
+          {
+            location,
+            fields: ["temperature"],
+            units: "imperial",
+            timesteps,
+            startTime,
+          }
+        );
+        setData(
+          response.data.data.timelines[0].intervals[0].values.temperature
+        );
+      } catch (error) {
+        console.error("Error retrieving weather data:", error);
+      }
+    };
+
+    fetchData();
+    const interval = setInterval(fetchData, 3 * 60 * 60 * 1000);
+
+    return () => clearInterval(interval);
   }, []);
 
-  return <h1>{data}</h1>;
+  return (
+    <h1 id={props.weatherID} className={props.headerStyle}>Leos Current Weather: {data}</h1>
+  );
 };
 
 export default LocationComponent;

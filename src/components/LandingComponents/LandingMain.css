@@ -1,0 +1,25 @@
+.landing-main{
+  position: relative;
+  font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', 'Consolas', 'source-code-pro', monospace;
+  display: flex;
+  flex-direction: column;
+  align-items: start;
+  min-height: 300px;
+  min-width: 400px;
+
+}
+#landing_name_intro{
+  align-self: flex-start;
+  margin-top: -20px;
+  font-size: 100px;
+  position: static;
+}
+#landing_p_intro{
+  margin-bottom: 0px;
+  position: relative;
+  left: 10px;
+}
+#landing_bio_intro{
+  position: absolute;
+  bottom:0px;
+}
