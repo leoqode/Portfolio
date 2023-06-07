@@ -9,8 +9,11 @@ export interface Props {
 const Header = (props: Props) => {
   return (
     <div className={props.style}>
-      <DateComponent headerStyle='header-cmps' />
-        <LocationComponent weatherID="header_name_weather" headerStyle='header-cmps' />
+      <DateComponent id='header_date_cmp' headerStyle='header-cmps' />
+      <LocationComponent
+        weatherID='header_name_weather'
+        headerStyle='header-cmps'
+      />
     </div>
   );
 };

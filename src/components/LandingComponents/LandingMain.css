@@ -1,4 +1,5 @@
 .landing-main{
+  color: #c7ddd1;
   position: relative;
   font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', 'Consolas', 'source-code-pro', monospace;
   display: flex;
@@ -12,7 +13,6 @@
   align-self: flex-start;
   margin-top: -20px;
   font-size: 100px;
-  position: static;
 }
 #landing_p_intro{
   margin-bottom: 0px;

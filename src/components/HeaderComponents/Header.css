@@ -1,14 +1,18 @@
 .header {
-  display: flex;  
+  display: flex;
+  position: relative;  
+  flex-direction: column-reverse;
+  align-items: center;
   height: 10%;
-  width: 100%;
-  font-family: 'Jost';
-  color: rgb(2, 0, 0);
+  font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', 'Consolas', 'source-code-pro', monospace;
+  color: #c7ddd1;
   padding: 20px;
 }
 
+#header_date_cmp{
+  font-size: 10px;
+}
+
 #header_name_weather{
-  position: static;
-  margin-left: auto;
   font-size: 20px;
 }
