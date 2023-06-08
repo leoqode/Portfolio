@@ -1,3 +1,6 @@
+import { useEffect, useState } from "react";
+
+
 export interface Props {
   headerStyle: string;
   id: string;
@@ -6,6 +9,9 @@ export interface Props {
 const DateComponent = (props: Props) => {
   const date = new Date();
 
+  const [ currentStamp, setCurrentStamp] = useState(date);
+
+  
 
 
   const options = {
@@ -16,6 +22,12 @@ const DateComponent = (props: Props) => {
     minute:'numeric',
   };
   const formattedDate = date.toLocaleString("en-US", options);
+  useEffect(() => {
+    return () => {
+      {formattedDate}
+    }
+  },[setCurrentStamp, date.getSeconds()])
+  
   return <h1 id={props.id} className={props.headerStyle}>{formattedDate}</h1>;
 };
 

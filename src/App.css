@@ -1,14 +1,10 @@
-*{
-  background-color: #333;
 
-}
+
+
+
 .intro{
   margin: 15% 0% 10% 10%;
   display: flex;
   align-items: start;
   width: 36.4%;
-}
-.app{
-  height: 100%;
-  width: 100%;
 }

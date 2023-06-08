@@ -7,13 +7,12 @@ const date = new Date();
 const postWeatherURL = "https://api.tomorrow.io/v4/timelines";
 const apiKey = "XqcA1V7gG3blEcKCq8nEFNXjDzsBqqSR";
 const location = [42.63496561409271, -73.68988401705542];
-const timesteps = ["current"];
+const timesteps = ["1d"];
 const startTime = date.toISOString();
 
 export interface Props {
   headerStyle: string;
   weatherID: string;
-  dateHour: number;
 }
 
 function reducer(state, action) {
@@ -33,59 +32,59 @@ const LocationComponent = (props: Props) => {
   const [weatherStatus, setWeatherStatus] = useReducer(reducer, {
     weatherCode: 0,
   });
+  const [apiCalled, setApiCalled] = useState(false);
+
+  const fetchData = async () => {
+    try {
+      const response = await axios.post(`${postWeatherURL}?apikey=${apiKey}`, {
+        location,
+        fields: ["temperature", "weatherCodeDay", "weatherCodeNight"],
+        units: "imperial",
+        timesteps,
+        startTime,
+      });
+      setApiCalled(true)
+      setData(response.data.data.timelines[0].intervals[0].values.temperature);
+      if (date.getHours() >= 7 && date.getHours() <= 19) {
+        setWeatherStatus({
+          type: "SET_WEATHER_CODE",
+          payload:
+            response.data.data.timelines[0].intervals[0].values
+              .weatherCodeNight,
+        });
+      } else {
+        setWeatherStatus({
+          type: "SET_WEATHER_CODE",
+          payload:
+            response.data.data.timelines[0].intervals[0].values.weatherCodeDay,
+        });
+      }
+    } catch (error) {
+      console.error("Error retrieving weather data:", error);
+    }
+  };
 
   useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const response = await axios.post(
-          `${postWeatherURL}?apikey=${apiKey}`,
-          {
-            location,
-            fields: ["temperature", "weatherCodeDay", "weatherCodeNight"],
-            units: "imperial",
-            timesteps,
-            startTime,
-          }
-        );
-        setData(
-          response.data.data.timelines[0].intervals[0].values.temperature
-        );
-        if (date.getHours() >= 7 && date.getHours() <= 19) {
-          setWeatherStatus({
-            type: "SET_WEATHER_CODE",
-            payload:
-              response.data.data.timelines[0].intervals[0].values
-                .weatherCodeNight,
-          });
-        } else {
-          setWeatherStatus({
-            type: "SET_WEATHER_CODE",
-            payload:
-              response.data.data.timelines[0].intervals[0].values
-                .weatherCodeDay,
-          });
-        }
-      } catch (error) {
-        console.error("Error retrieving weather data:", error);
-      }
+    if (!apiCalled) {
+      fetchData();
+      setApiCalled(true);
+    }
+  }, [apiCalled]);
 
-    };
-
-    fetchData();
-
-  }, []);
-
-  const getWeatherImage = (newMapToPng: Map<number,string>) =>{
-    let code: number = 10000;
-    return newMapToPng.get(code)
-  }
-
+  const getWeatherImage = (newMapToPng: Map<number, string>) => {
+    let code: number = weatherStatus.weatherCode;
+    return newMapToPng.get(code);
+  };
   return (
     <>
       <h1 id={props.weatherID} className={props.headerStyle}>
-        Leo's Current Weather: {data}
+        Leo's Current Weather: {data + 18}
       </h1>
-      <img src={`./src/assets/weatherAssets/${getWeatherImage(newMapToPng)}`} alt="Weather" />
+      <img
+        id='header_weather_logo'
+        src={`./src/assets/weatherAssets/${getWeatherImage(newMapToPng)}`}
+        alt='Weather'
+      />
     </>
   );
 };

@@ -32,7 +32,7 @@ const LandingMain = () => {
         const timeoutID = setTimeout(nameAnimation, 0.4 * 1000);
         return () => clearTimeout(timeoutID);
       } else if (nameIndex == introNameText.length) {
-        const timeoutID = setTimeout(nameAnimation, 5 * 1000);
+        const timeoutID = setTimeout(nameAnimation, 9 * 1000);
         return () => clearTimeout(timeoutID);
       } else {
         setIntroNameArr([]);
@@ -51,8 +51,8 @@ const LandingMain = () => {
       <p id='landing_p_intro'>{stringDisplay}</p>
       <h1 id='landing_name_intro'>{nameDisplay}</h1>
       <p id='landing_bio_intro'>
-        I am a sophmore computer science student at Texas State University.
-        Born in mexico, and raised in Austin Texas
+      I am a computer science and math major, and current sophmore student at Texas State University.
+      I am with an intent in software development, and pursuing graduate level coursework for experience in quantintative trading.  
       </p>
     </div>
   );

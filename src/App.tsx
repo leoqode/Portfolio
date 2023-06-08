@@ -5,7 +5,11 @@ import "./App.css";
 function App() {
   return (
     <div className='app'>
-      <Header style='header' />
+    <div>
+    <Header style='header' />
+    </div>
+    
+      
       <div className='intro'>
         <LandingMain></LandingMain>
       </div>

@@ -1,5 +1,5 @@
 .landing-main{
-  color: #c7ddd1;
+  color: #333;
   position: relative;
   font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', 'Consolas', 'source-code-pro', monospace;
   display: flex;
@@ -21,5 +21,6 @@
 }
 #landing_bio_intro{
   position: absolute;
+  
   bottom:0px;
 }
