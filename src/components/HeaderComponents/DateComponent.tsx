@@ -9,7 +9,7 @@ export interface Props {
 const DateComponent = (props: Props) => {
   const date = new Date();
 
-  const [ currentStamp, setCurrentStamp] = useState(date);
+  const [ currentStamp, setCurrentStamp] = useState('');
 
   
 
@@ -21,14 +21,16 @@ const DateComponent = (props: Props) => {
     hour: "numeric",
     minute:'numeric',
   };
+  // @ts-ignore
   const formattedDate = date.toLocaleString("en-US", options);
   useEffect(() => {
+    setCurrentStamp(formattedDate)
     return () => {
-      {formattedDate}
+      currentStamp
     }
   },[setCurrentStamp, date.getSeconds()])
   
-  return <h1 id={props.id} className={props.headerStyle}>{formattedDate}</h1>;
+  return <h1 id={props.id} className={props.headerStyle}>{currentStamp}</h1>;
 };
 
 export default DateComponent;

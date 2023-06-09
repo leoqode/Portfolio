@@ -15,7 +15,7 @@ export interface Props {
   weatherID: string;
 }
 
-function reducer(state, action) {
+function reducer(state: object, action: {type: string; payload?: any}) {
   switch (action.type) {
     case "SET_WEATHER_CODE":
       return {
@@ -73,12 +73,15 @@ const LocationComponent = (props: Props) => {
 
   const getWeatherImage = (newMapToPng: Map<number, string>) => {
     let code: number = weatherStatus.weatherCode;
+    if(code == 0 || 1){
+      code = 10000
+    }
     return newMapToPng.get(code);
   };
   return (
     <>
       <h1 id={props.weatherID} className={props.headerStyle}>
-        Leo's Current Weather: {data + 18}
+        Leo's Current Weather: {data ? `${data + 18}` : null}
       </h1>
       <img
         id='header_weather_logo'

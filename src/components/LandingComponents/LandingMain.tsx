@@ -51,8 +51,11 @@ const LandingMain = () => {
       <p id='landing_p_intro'>{stringDisplay}</p>
       <h1 id='landing_name_intro'>{nameDisplay}</h1>
       <p id='landing_bio_intro'>
-      I am a computer science and math major, and current sophmore student at Texas State University.
-      I am with an intent in software development, and pursuing graduate level coursework for experience in quantintative trading.  
+        Student at Texas State University, pursuing a
+        double major in Computer Science and Mathematics. I am dedicated to honing my
+        skills and knowledge in this field. Furthermore, I am actively engaged
+        in graduate level coursework, with a particular focus on gaining
+        valuable experience in the realm of quantitative trading.
       </p>
     </div>
   );
