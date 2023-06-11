@@ -1,7 +1,19 @@
 
+*{
+  font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', 'Consolas', 'source-code-pro', monospace;
+}
+.init-button{
+  position: absolute;
+  right: 30%;
+  
+  border-width: 2px;
+  background-color:#afcaad;
 
-
-
+}
+.app{
+  height: 100%;
+  overflow-y: auto;
+}
 .intro{
   margin: 15% 0% 10% 10%;
   display: flex;

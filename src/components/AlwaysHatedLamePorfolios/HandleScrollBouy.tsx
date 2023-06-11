@@ -1,40 +1,29 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 
 const HandleScrollBouy = () => {
-  const maxHeight = 812.578;
-  const animationDuration = 100; // Duration in milliseconds
+  const [showButton, setShowButton] = useState(false);
 
   useEffect(() => {
-    let animationStart;
-
-    const handleOnScroll = () => {
-      const currentScroll = window.scrollY;
-      if (currentScroll > maxHeight) {
-        if (!animationStart) {
-          animationStart = Date.now();
-        }
-        const elapsed = Date.now() - animationStart;
-        const progress = Math.min(elapsed / animationDuration, 1);
-
-        const scrollTop = progress * currentScroll;
-        window.scrollTo({ top: scrollTop, behavior: "auto" });
-
-        if (progress < 1) {
-          window.requestAnimationFrame(handleOnScroll);
-        } else {
-          animationStart = null;
-        }
+    const handleScroll = () => {
+      console.log(window.scrollY);
+      if (window.scrollY >= 30) {
+        window.scrollTo(0, 0);
+        setShowButton(true);
       }
     };
 
-    window.addEventListener("scroll", handleOnScroll);
+    window.addEventListener("scroll", handleScroll);
 
     return () => {
-      window.removeEventListener("scroll", handleOnScroll);
+      window.removeEventListener("scroll", handleScroll);
     };
-  }, []);
+  }, []); // Empty dependency array to run the effect only once
 
-  return null;
+  return showButton ? (
+    <button  className='init-button'>
+      Scroll not working?
+    </button>
+  ) : null;
 };
 
 export default HandleScrollBouy;
