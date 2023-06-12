@@ -1,9 +1,11 @@
 import "./LandingMain.css";
+import useHandleNoScrollClick from "../AlwaysHatedLamePorfolios/HandleNoScrollClick";
 import { useEffect, useState } from "react";
 
 const LandingMain = () => {
   const introParText: string = "Hi! My name is...";
   const introNameText: string = "Leo";
+  const {isClicked} = useHandleNoScrollClick()
   const [index, setIndex] = useState(0);
   const [nameIndex, setNameIndex] = useState(0);
   const [introParArr, setIntroParArr] = useState<String[]>([]);
@@ -47,14 +49,16 @@ const LandingMain = () => {
   }, [introParArr, index, introNameArr]);
 
   const stringDisplay = introParArr.join("");
-  const nameDisplay = allTyped ? introNameArr.map((letter, index) => (
-    <div key={index} className={`anim-letter-${index}`}>
-      {letter}
-    </div>)) : introNameArr.map((letter, index) => (
-    <div key={index} className={`letter-${index}`}>
-      {letter}
-    </div>
-  ));
+    const nameDisplay = (allTyped && isClicked) ? introNameArr.map((letter, index) => (
+      <div key={index} className={`anim-letter-${index}`}>
+        {letter}
+      </div>)) : introNameArr.map((letter, index) => (
+      <div key={index} className={`letter-${index}`}>
+        {letter}
+      </div>
+    ));
+
+
 
   return (
     <div className='landing-main'>

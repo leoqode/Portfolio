@@ -1,7 +1,9 @@
 import { useEffect, useState } from "react";
+import useHandleNoScrollClick from "./HandleNoScrollClick";
 
 const HandleScrollBouy = () => {
   const [showButton, setShowButton] = useState(false);
+  const { buttonRef } = useHandleNoScrollClick();
 
   useEffect(() => {
     const handleScroll = () => {
@@ -20,7 +22,7 @@ const HandleScrollBouy = () => {
   }, []); // Empty dependency array to run the effect only once
 
   return showButton ? (
-    <button  className='init-button'>
+    <button ref={buttonRef} className='init-button'>
       Scroll not working?
     </button>
   ) : null;

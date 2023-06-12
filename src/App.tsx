@@ -13,8 +13,7 @@ function App() {
       {/* here goes button component*/}
       <div className="intro">
         <LandingMain></LandingMain>
-        <HandleScrollBouy /> {/* Render HandleScrollBouy as a child component */}
-
+        <HandleScrollBouy /> 
       </div>
     </div>
   );
