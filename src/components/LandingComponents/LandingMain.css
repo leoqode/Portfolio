@@ -27,47 +27,7 @@
 }
 
 
-
-.landing-name-wrapper {
-  animation: y-axis 6s ease-in ;
-  animation-delay: 4s;
-  animation-iteration-count: infinite;
-}
-
-.anim-letter-0 {
-  animation: x-axis 6s ease-in ;
-  animation-iteration-count: infinite;
-
-}
-
-.anim-letter-1 {
-  animation: x-axis 6s ease-in 1;
-  animation-iteration-count: infinite;
-}
-
-.anim-letter-2 {
-  animation: x-axis 6s ease-in 1;
-  animation-iteration-count: infinite;
-
-}
-
-@keyframes x-axis {
+#black_hole_animation{
+  margin-left: 50%;
   
-  
-  0% {
-    transform: translateX(0px);
-  }
-  100% {
-    transform: translateX(550px);
-  }
-}
-
-@keyframes y-axis {
-  0%{
-    transform: translateY(0px) ;
-  }90% {
-    transform: translateY(100px) rotate(10deg);
-  }95%{
-    transform: rotate(360deg);
-  }
 }
