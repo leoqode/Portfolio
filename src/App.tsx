@@ -1,20 +1,19 @@
 import Header from "./components/HeaderComponents/Header";
 import LandingMain from "./components/LandingComponents/LandingMain";
+import BlackHoleComp from "./components/AlwaysHatedLamePorfolios/BlackHoleLetterAnimation";
 import "./App.css";
 
 function App() {
   return (
-    <div className="app">
+    <div className='app'>
       <div>
-        <Header style="header" />
+        <Header style='header' />
       </div>
-
-      {/* here goes button component*/}
-      <div className="intro">
+      <div className='intro'>
         <LandingMain></LandingMain>
-
       </div>
-      
+      <BlackHoleComp/>
+    
     </div>
   );
 }

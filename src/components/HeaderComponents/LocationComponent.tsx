@@ -74,7 +74,7 @@ const LocationComponent = (props: Props) => {
   const getWeatherImage = (newMapToPng: Map<number, string>) => {
     let code: number = weatherStatus.weatherCode;
     if(code == 0 || 1){
-      code = 10000
+      code = 10010
     }
     return newMapToPng.get(code);
   };

@@ -1,119 +1,138 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef } from "react";
+import * as THREE from "three";
+import { OrbitControls } from "three/addons/controls/OrbitControls.js";
+import "./BlackHoleLetterAnimation.css";
 
-export interface Props {
-  text: Array<string>;
-}
-
-const requestAnimFrame =
-  window.requestAnimationFrame ||
-  function (callback: () => void) {
-    window.setTimeout(callback, 1000 / 60);
-  };
-
-const TextParticle = (
-  x: number,
-  y: number,
-  distance: number,
-  text: string
-) => {
-  let angle = Math.random() * 2 * Math.PI;
-  const opacity = (Math.random() * 5 + 2) / 10;
-  const particleDistance = (1 / opacity) * distance;
-  const speed = particleDistance * 0.00003;
-
-  const position = {
-    x: x + particleDistance * Math.cos(angle),
-    y: y + particleDistance * Math.sin(angle),
-  };
-
-  const draw = (ctx: CanvasRenderingContext2D) => {
-    ctx.fillStyle = `rgba(0, 0, 0, ${opacity})`;
-    ctx.font = "12px Arial";
-    ctx.fillText(text, position.x, position.y);
-  };
-
-  const update = (ctx: CanvasRenderingContext2D) => {
-    angle += speed;
-    position.x = x + particleDistance * Math.cos(angle);
-    position.y = y + particleDistance * Math.sin(angle);
-    draw(ctx);
-  };
-
-  return { update };
-};
-
-const BlackHoleAnimation = ({ text }: Props) => {
+const BlackHoleComp = () => {
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
-  const [particles, setParticles] = useState<Array<object>>([]);
-
   useEffect(() => {
-    const canvas = canvasRef.current;
-    if (canvas) {
-      const ctx = canvas.getContext("2d");
-      if (ctx) {
-        const position = {
-          x: canvas.width / 2,
-          y: canvas.height / 2,
-        };
-        const radius = 30;
-        const count = 5;
-        const updatedParticles: Array<object> = [];
+    if (canvasRef.current) {
+      const sizes = {
+        width: window.innerWidth,
+        height: window.innerHeight,
+      };
+      const scene = new THREE.Scene();
+      scene.background = new THREE.Color("#afcaad");
+      const sphere = new THREE.SphereGeometry(4, 64, 64);
+      const sphereMaterial = new THREE.MeshStandardMaterial({
+        color: "#ffffff",
+        roughness: 0.5,
+        metalness: 0.1,
+      });
+      
+      const mesh = new THREE.Mesh(sphere, sphereMaterial);
+      scene.add(mesh);
 
-        const updateParticles = () => {
-          updatedParticles.length = 0;
-          text.forEach((item) => {
-            for (let i = 0; i < count; i++) {
-              updatedParticles.push(
-                TextParticle(position.x, position.y, radius, item)
-              );
-            }
-          });
-          setParticles([...updatedParticles]);
-        };
+      const linkedInTexture = new THREE.TextureLoader().load('./src/assets/linkedInOrbit.png')
+      const linkedIn = new THREE.BoxGeometry(1, 1, 1);
+      const materialLinkedIn = new THREE.MeshBasicMaterial({
+        map: linkedInTexture,
+      });
+      const linkedInCube = new THREE.Mesh(linkedIn, materialLinkedIn);
+      linkedInCube.position.set(6, 6, 0);
+      scene.add(linkedInCube);
 
-        updateParticles();
 
-        const draw = () => {
-          ctx.clearRect(0, 0, canvas.width, canvas.height);
-          const gradient = ctx.createRadialGradient(
-            position.x,
-            position.y,
-            0,
-            position.x,
-            position.y,
-            radius + 50
-          );
-          gradient.addColorStop(0, "black");
-          gradient.addColorStop(1, "white");
+      const githubTexture = new THREE.TextureLoader().load('./src/assets/githubOrbit.png')
+      const githubBox = new THREE.BoxGeometry(1, 1, 1);
+      const githubMaterial = new THREE.MeshBasicMaterial({
+        map: githubTexture,
+      });
+      const githubMesh = new THREE.Mesh(githubBox, githubMaterial);
+      scene.add(githubMesh);
 
-          ctx.fillStyle = gradient;
-          ctx.beginPath();
-          ctx.arc(position.x, position.y, radius, 0, Math.PI * 2, false);
-          ctx.fill();
-          ctx.closePath();
-        };
+      const directionalLight = new THREE.DirectionalLight(0xffffff, 1); // Set light color to white (0xffffff) and intensity to 1
+      directionalLight.position.set(0, 1, 0); // Set position to shine from above (0, 1, 0)
+      scene.add(directionalLight);
+      
 
-        const update = () => {
-          particles.forEach((particle: any) => particle.update(ctx));
-          draw();
-        };
+      const camera = new THREE.PerspectiveCamera(
+        20,
+        window.innerWidth / window.innerHeight,
+        0.1,
+        1000
+      );
+      camera.position.z = 40;
+      camera.position.y = -100;
+      camera.position.x = 20;
+      scene.add(camera);
 
-        const loop = () => {
-          ctx.clearRect(0, 0, canvas.width, canvas.height);
-          update();
-          requestAnimFrame(loop);
-        };
+      const geometryRing = new THREE.RingGeometry(10.1, 10.2, 32);
+      const materialRing = new THREE.MeshBasicMaterial({
+        color: 0xfffff,
+        side: THREE.DoubleSide,
+      });
+      const meshRing = new THREE.Mesh(geometryRing, materialRing);
 
-        loop();
-      }
+      const geometryRing2 = new THREE.RingGeometry(5.1, 5.2, 32);
+      const materialRing2 = new THREE.MeshBasicMaterial({
+        color: 0xfffff,
+        side: THREE.DoubleSide,
+      });
+      const meshRing2 = new THREE.Mesh(geometryRing2, materialRing2);
+      scene.add(meshRing);
+      scene.add(meshRing2);
+
+      const renderer = new THREE.WebGLRenderer({ canvas: canvasRef.current });
+      renderer.setSize(window.innerWidth, window.innerHeight);
+      renderer.render(scene, camera);
+      const controls = new OrbitControls(camera, canvasRef.current);
+
+      controls.enableDamping = true;
+      controls.enableZoom = false;
+      controls.enablePan = false;
+      controls.autoRotate = true;
+      controls.rotateSpeed = 5;
+
+      //grid helper---------------------------
+    {/*
+      const size = 40;
+
+      const divisions = 40;
+
+      const gridHelper = new THREE.GridHelper(size, divisions);
+      scene.add(gridHelper);
+    */}
+      //grid helper---------------------------
+
+      window.addEventListener("resize", () => {
+        sizes.width = window.innerWidth;
+        sizes.height = window.innerHeight;
+
+        camera.aspect = sizes.width / sizes.height;
+        camera.updateProjectionMatrix();
+        renderer.setSize(sizes.width, sizes.height);
+        renderer.setPixelRatio(2);
+      });
+      let t: number = 0;
+      let t2: number = 0;
+      const loop = () => {
+        window.requestAnimationFrame(loop);
+        
+        t += .02;
+        t2 += .026;
+
+        linkedInCube.rotation.y += 0.0;
+        githubMesh.rotation.x += 0.0;
+
+        meshRing.rotation.y -= 0.02;
+        meshRing2.rotation.z -= 0.026;
+
+
+        githubMesh.position.x = 10 * Math.cos(t) + 0;
+        githubMesh.position.z = 10 * Math.sin(t) + 0;
+
+
+        linkedInCube.position.y = 5 * Math.sin(t) + 0;
+        linkedInCube.position.x = 5 * Math.cos(t) + 0;
+
+        renderer.render(scene, camera);
+      };
+      loop();
     }
-  }, [text]);
+  }, []);
 
-  return (
-    <div id="black_hole_animation">
-      <canvas width={500} height={500} ref={canvasRef} />
-    </div>
-  );
+  return <canvas ref={canvasRef} className='webgl' />;
 };
 
-export default BlackHoleAnimation;
+export default BlackHoleComp;

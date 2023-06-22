@@ -1,5 +1,5 @@
 .header-nav-items{
-  
+  font-size: 12px;
   letter-spacing: .3px;
   list-style: none;
   margin:0px 5px 0px 10px; 
@@ -10,6 +10,5 @@
   position: absolute;
   align-items: center;
   right:3%;
-  bottom:50%;
-
+  bottom: 15.462px;
 }

@@ -1,33 +1,32 @@
 .landing-main {
+  align-items: center;
   color: #333;
   position: relative;
-  font-family: "Monaco", "Menlo", "Ubuntu Mono", "Consolas", "source-code-pro",
-    monospace;
+  font-family: 'Rasa' ;
   display: flex;
   flex-direction: column;
-  align-items: start;
   min-height: 500px;
   min-width: 400px;
 }
+
 #landing_name_intro {
   display: flex;
   position: relative;
-  align-self: flex-start;
-  margin-top: -15px;
-  font-size: 100px;
+  margin-top: 15px;
+  font-size: 150px;
 }
+
 #landing_p_intro {
   margin-bottom: 0px;
   position: relative;
   left: 10px;
 }
+
 #landing_bio_intro {
   position: absolute;
   bottom: 200px;
 }
 
-
 #black_hole_animation{
   margin-left: 50%;
-  
 }

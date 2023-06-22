@@ -4,30 +4,27 @@
   flex-direction: column-reverse;
   align-items: center;
   height: 10%;
-  font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', 'Consolas', 'source-code-pro', monospace;
-  color: #333;
+  font-family: 'Rasa';
+  color: #6c4e4e;
   padding: 20px;
 }
 
 #header_date_cmp{
+  position: absolute;
+  top: 0px;
   font-size: 12px;
 }
 
 #header_name_weather{
-  
-  font-size: 20px;
-  image-rendering: -moz-crisp-edges;
-  image-rendering: -o-crisp-edges;
-  image-rendering: -webkit-optimize-contrast;
-  -ms-interpolation-mode: nearest-neighbor;
-  -webkit-filter: drop-shadow(2px 2px 2px #b31919);
-  filter: drop-shadow(2px 2px 2px #a29898);
+  position: absolute;
+  left: 0px;
+  top: 0px;
+  font-size: 12px;
+
 }
 #header_weather_logo{
-  image-rendering: -moz-crisp-edges;
-  image-rendering: -o-crisp-edges;
-  image-rendering: -webkit-optimize-contrast;
-  -ms-interpolation-mode: nearest-neighbor;
-  -webkit-filter: drop-shadow(2px 2px 2px #b31919);
-  filter: drop-shadow(2px 2px 2px #070505);
+  position: absolute;
+  left: 0px;
+  top: 70%;
+
 }

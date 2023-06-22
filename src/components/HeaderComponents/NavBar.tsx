@@ -6,16 +6,16 @@ export interface Props {
 }
 
 const navBarList: Array<string> = [
-  "About me",
-  "Resume",
+  "Linked In",
+  "Github",
   "Projects",
-  "Current task",
+  "Resume",
 ];
 
 const NavBar = (props: Props) => {
   return (
     <div className={props.navStyle}>
-    {navBarList.map((page,index) => <li key={`${index}_nav`} className={props.itemStyle}> {page} </li>)}
+    {navBarList.map((page,index) => <h1 key={`${index}_nav`} className={props.itemStyle}> {page} </h1>)}
     </div>
     )
 };
