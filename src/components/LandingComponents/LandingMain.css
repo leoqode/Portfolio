@@ -1,9 +1,9 @@
 .landing-main {
+  display: flex;
   align-items: center;
   color: #333;
   position: relative;
   font-family: 'Rasa' ;
-  display: flex;
   flex-direction: column;
   min-height: 500px;
   min-width: 400px;
@@ -19,7 +19,7 @@
 #landing_p_intro {
   margin-bottom: 0px;
   position: relative;
-  left: 10px;
+
 }
 
 #landing_bio_intro {
