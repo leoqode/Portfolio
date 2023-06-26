@@ -2,22 +2,13 @@ import { useEffect, useRef, useState } from "react";
 import * as THREE from "three";
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
 import "./BlackHoleLetterAnimation.css";
-
+import './BlackHoleLetterAnimation.css'
 const BlackHoleComp = () => {
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
   const [spaceBackground, setSpaceBackground] = useState(true);
-  
-  
 
+  //STARS CLASS ---------------------->
 
-
-
-
-
-//STARS CLASS ---------------------->
-
-
-  
   class Star {
     public positionX: number;
     public positionY: number;
@@ -32,26 +23,20 @@ const BlackHoleComp = () => {
     private destinationZ: number;
 
     constructor() {
-      
-      this.positionX = Math.floor(Math.random() * 50 - 25)
-      this.positionY = Math.floor(Math.random() * 50 - 25)
-      this.positionZ = Math.floor(Math.random() * 50 - 25)
+      this.positionX = Math.floor(Math.random() * 50 - 25);
+      this.positionY = Math.floor(Math.random() * 50 - 25);
+      this.positionZ = Math.floor(Math.random() * 50 - 25);
       this.shape = new THREE.SphereGeometry(0.1, 32, 32);
       this.material = new THREE.MeshBasicMaterial({ color: 0xffffff });
       this.closeNode = new THREE.Object3D();
       this.linker = new THREE.Line();
-      this.destinationX = Math.floor(Math.random() * 50 - 25)
-      this.destinationY = Math.floor(Math.random() * 50 - 25)
-      this.destinationZ = Math.floor(Math.random() * 50 - 25)
+      this.destinationX = Math.floor(Math.random() * 50 - 25);
+      this.destinationY = Math.floor(Math.random() * 50 - 25);
+      this.destinationZ = Math.floor(Math.random() * 50 - 25);
       this.star = new THREE.Mesh(this.shape, this.material);
     }
 
-
-
     update(): void {
-      
-
-
       if (!this.isInBounds()) {
         this.createRandomPosition();
       }
@@ -59,9 +44,12 @@ const BlackHoleComp = () => {
 
     private isInBounds(): boolean {
       if (
-        this.positionX > 50 ||this.positionX < -50  ||
-        this.positionY > 50 ||this.positionY < -50  ||
-        this.positionZ > 50 ||this.positionZ < -50 
+        this.positionX > 50 ||
+        this.positionX < -50 ||
+        this.positionY > 50 ||
+        this.positionY < -50 ||
+        this.positionZ > 50 ||
+        this.positionZ < -50
       ) {
         return false;
       } else {
@@ -73,17 +61,11 @@ const BlackHoleComp = () => {
       let y = Math.random() * window.innerWidth;
       let z = Math.random() * Math.sqrt(window.innerWidth);
 
-      this.positionX = x
-      this.positionY = y
-      this.positionZ = z
+      this.positionX = x;
+      this.positionY = y;
+      this.positionZ = z;
     }
   }
-
-
-
-
-  
-
 
   useEffect(() => {
     let stars: Array<Star> = [];
@@ -92,13 +74,24 @@ const BlackHoleComp = () => {
         width: window.innerWidth,
         height: window.innerHeight,
       };
+      
       const scene = new THREE.Scene();
-      scene.background = new THREE.Color("#afcaad");
+      const initialColor = new THREE.Color('#afcaad')
+      scene.background = initialColor
+      const handleScroll = () => {
+        const scrollProgress = (window.scrollY)/150  // Calculate the scroll progress as a value between 0 and 1
+        const transitionColor = new THREE.Color().lerpColors(initialColor, new THREE.Color(0, 0, 0), scrollProgress);
+        scene.background = transitionColor;
+      };
+
+
+      window.addEventListener('scroll', handleScroll)
+
       const sphere = new THREE.SphereGeometry(4, 64, 64);
       const sphereMaterial = new THREE.MeshStandardMaterial({
         color: "#ffffff",
-        roughness: 0.5,
-        metalness: 0.1,
+        roughness: 1,
+        metalness: -.3,
       });
 
       const mesh = new THREE.Mesh(sphere, sphereMaterial);
@@ -167,7 +160,8 @@ const BlackHoleComp = () => {
       controls.rotateSpeed = 5;
 
       //grid helper---------------------------
-      {/*
+      {
+        /*
         
       const size = 40;
 
@@ -176,7 +170,8 @@ const BlackHoleComp = () => {
       const gridHelper = new THREE.GridHelper(size, divisions);
       scene.add(gridHelper);
     
-      */}
+      */
+      }
       //grid helper---------------------------
 
       window.addEventListener("resize", () => {
@@ -203,11 +198,7 @@ const BlackHoleComp = () => {
         const starAnimation = () => {
           window.requestAnimationFrame(starAnimation);
 
-          starIteration += 0.1
-
-
-          
-
+          starIteration += 0.1;
         };
       }
       const loop = () => {
@@ -216,17 +207,15 @@ const BlackHoleComp = () => {
         t += 0.01;
         t2 -= 0.019;
 
-        for(let i = 0; i < stars.length; i++){
-          let star = stars[i]
-          star.positionZ += i/10;
-          star.star.position.setZ(star.positionZ)
-          if(star.positionZ > 1000){
-            star.positionZ -=2000
-            star.star.position.setZ(star.positionZ)
+        for (let i = 0; i < stars.length; i++) {
+          let star = stars[i];
+          star.positionZ += i/15;
+          star.star.position.setZ(star.positionZ);
+          if (star.positionZ > 50) {
+            star.positionZ -= 1000;
+            star.star.position.setZ(star.positionZ);
           }
         }
-
-
 
         linkedInCube.rotation.y += 0.01;
         githubMesh.rotation.y += 0.01;
@@ -243,12 +232,14 @@ const BlackHoleComp = () => {
         renderer.render(scene, camera);
       };
       loop();
+      return () => {
+      window.removeEventListener("scroll", handleScroll);
+    };
     }
+  
   }, []);
 
-
-
-  return <canvas ref={canvasRef} className='webgl' />;
+  return <canvas ref={canvasRef}  className='webgl' />;
 };
 
 export default BlackHoleComp;
