@@ -22,7 +22,6 @@ const BlackHoleComp = () => {
     public positionX: number;
     public positionY: number;
     public positionZ: number;
-
     public star: THREE.Mesh;
     private closeNode: THREE.Object3D;
     private shape: THREE.SphereGeometry;
@@ -195,14 +194,14 @@ const BlackHoleComp = () => {
       if (spaceBackground) {
         for (let i = 0; i < 100; i++) {
           let star = new Star();
-          star.star.position.setX(star.positionX)
-          star.star.position.setY(star.positionY)
-          star.star.position.setZ(star.positionZ)
+          star.star.position.setX(star.positionX);
+          star.star.position.setY(star.positionY);
+          star.star.position.setZ(star.positionZ);
           stars.push(star);
           scene.add(stars[i].star);
         }
         const starAnimation = () => {
-          window.requestAnimationFrame(starAnimation)
+          window.requestAnimationFrame(starAnimation);
 
           starIteration += 0.1
 
@@ -217,6 +216,15 @@ const BlackHoleComp = () => {
         t += 0.01;
         t2 -= 0.019;
 
+        for(let i = 0; i < stars.length; i++){
+          let star = stars[i]
+          star.positionZ += i/10;
+          star.star.position.setZ(star.positionZ)
+          if(star.positionZ > 1000){
+            star.positionZ -=2000
+            star.star.position.setZ(star.positionZ)
+          }
+        }
 
 
 
@@ -237,6 +245,8 @@ const BlackHoleComp = () => {
       loop();
     }
   }, []);
+
+
 
   return <canvas ref={canvasRef} className='webgl' />;
 };
