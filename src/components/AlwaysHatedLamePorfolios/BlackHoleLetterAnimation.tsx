@@ -2,7 +2,8 @@ import { useEffect, useRef, useState } from "react";
 import * as THREE from "three";
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
 import "./BlackHoleLetterAnimation.css";
-import './BlackHoleLetterAnimation.css'
+import "./BlackHoleLetterAnimation.css";
+
 const BlackHoleComp = () => {
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
   const [spaceBackground, setSpaceBackground] = useState(true);
@@ -74,24 +75,50 @@ const BlackHoleComp = () => {
         width: window.innerWidth,
         height: window.innerHeight,
       };
-      
+
       const scene = new THREE.Scene();
-      const initialColor = new THREE.Color('#afcaad')
-      scene.background = initialColor
+      const initialColor = new THREE.Color("#afcaad");
+      scene.background = initialColor;
       const handleScroll = () => {
-        const scrollProgress = (window.scrollY)/150  // Calculate the scroll progress as a value between 0 and 1
-        const transitionColor = new THREE.Color().lerpColors(initialColor, new THREE.Color(0, 0, 0), scrollProgress);
+        const scrollProgress = window.scrollY / 150; // Calculate the scroll progress as a value between 0 and 1
+        const transitionColor = new THREE.Color().lerpColors(
+          initialColor,
+          new THREE.Color(0, 0, 0),
+          scrollProgress
+        );
+
         scene.background = transitionColor;
+        document.body.style.backgroundColor = transitionColor.getStyle(); // Set body background color
+
+        const nameLandingPage = document.getElementById("landing_name_intro");
+        const greetingLandingPage = document.getElementById("landing_p_intro");
+
+        if (nameLandingPage && greetingLandingPage) {
+          const textColor = new THREE.Color().lerpColors(
+            new THREE.Color(0, 0, 0),
+            new THREE.Color(1, 1, 1),
+            scrollProgress
+          );
+          nameLandingPage.style.color = textColor.getStyle();
+          greetingLandingPage.style.color = textColor.getStyle();
+        }
+
+          const newX = camera.position.x - scrollProgress / 3; 
+          const newY = camera.position.y;
+          const newZ = camera.position.z;
+
+          console.log(scrollProgress);
+          camera.position.set(newX, newY, newZ);
+        
       };
 
-
-      window.addEventListener('scroll', handleScroll)
+      window.addEventListener("scroll", handleScroll);
 
       const sphere = new THREE.SphereGeometry(4, 64, 64);
       const sphereMaterial = new THREE.MeshStandardMaterial({
         color: "#ffffff",
         roughness: 1,
-        metalness: -.3,
+        metalness: -0.3,
       });
 
       const mesh = new THREE.Mesh(sphere, sphereMaterial);
@@ -152,7 +179,8 @@ const BlackHoleComp = () => {
       renderer.setSize(window.innerWidth, window.innerHeight);
       renderer.render(scene, camera);
       const controls = new OrbitControls(camera, canvasRef.current);
-
+      const axesHelper = new THREE.AxesHelper(5);
+      scene.add(axesHelper);
       controls.enableDamping = true;
       controls.enableZoom = false;
       controls.enablePan = false;
@@ -209,7 +237,7 @@ const BlackHoleComp = () => {
 
         for (let i = 0; i < stars.length; i++) {
           let star = stars[i];
-          star.positionZ += i/15;
+          star.positionZ += i / 15;
           star.star.position.setZ(star.positionZ);
           if (star.positionZ > 50) {
             star.positionZ -= 1000;
@@ -233,13 +261,12 @@ const BlackHoleComp = () => {
       };
       loop();
       return () => {
-      window.removeEventListener("scroll", handleScroll);
-    };
+        window.removeEventListener("scroll", handleScroll);
+      };
     }
-  
   }, []);
 
-  return <canvas ref={canvasRef}  className='webgl' />;
+  return <canvas ref={canvasRef} className='webgl' />;
 };
 
 export default BlackHoleComp;

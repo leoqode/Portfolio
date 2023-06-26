@@ -5,6 +5,7 @@
 .app {
   height: 100%;
   overflow-y: auto;
+  overflow-x: hidden;
 }
 .intro {
   flex-wrap: wrap;
@@ -12,4 +13,12 @@
   display: flex;
   justify-content: center;
   align-items: center;
+}
+body, html{
+  height: 100%;
+  padding: 0;
+  margin: 0 auto;
+}
+body{
+  background-color: #afcaad ;
 }
