@@ -13,7 +13,12 @@ function App() {
         <LandingMain></LandingMain>
       </div>
       <BlackHoleComp/>
-    
+      <div style={{height:'400px'}}>
+        <h1 style={{color:'white'}}>
+
+        Hello
+        </h1>
+      </div>
     </div>
   );
 }
