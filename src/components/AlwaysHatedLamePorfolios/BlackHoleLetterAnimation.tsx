@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef } from "react";
 import * as THREE from "three";
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
 import "./BlackHoleLetterAnimation.css";
@@ -6,7 +6,6 @@ import "./BlackHoleLetterAnimation.css";
 
 const BlackHoleComp = () => {
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
-  const [spaceBackground, setSpaceBackground] = useState(true);
 
   //STARS CLASS ---------------------->
 
@@ -15,13 +14,9 @@ const BlackHoleComp = () => {
     public positionY: number;
     public positionZ: number;
     public star: THREE.Mesh;
-    private closeNode: THREE.Object3D;
     private shape: THREE.SphereGeometry;
     private material: THREE.MeshBasicMaterial;
-    private linker: THREE.Line;
-    private destinationX: number;
-    private destinationY: number;
-    private destinationZ: number;
+
 
     constructor() {
       this.positionX = Math.floor(Math.random() * 50 - 25);
@@ -29,11 +24,6 @@ const BlackHoleComp = () => {
       this.positionZ = Math.floor(Math.random() * 50 - 25);
       this.shape = new THREE.SphereGeometry(0.1, 32, 32);
       this.material = new THREE.MeshBasicMaterial({ color: 0xffffff });
-      this.closeNode = new THREE.Object3D();
-      this.linker = new THREE.Line();
-      this.destinationX = Math.floor(Math.random() * 50 - 25);
-      this.destinationY = Math.floor(Math.random() * 50 - 25);
-      this.destinationZ = Math.floor(Math.random() * 50 - 25);
       this.star = new THREE.Mesh(this.shape, this.material);
     }
 
@@ -138,8 +128,8 @@ const BlackHoleComp = () => {
         const desiredY = window.innerHeight * 0.1; // Y coordinate relative to the window height
 
         // Calculate the translation amount based on the initial position and desired position
-        const translateX = (desiredX) * scrollProgress;
-        const translateY = (desiredY) * scrollProgress;
+        const translateX = desiredX * scrollProgress;
+        const translateY = desiredY * scrollProgress;
 
         // Apply the translation to the div if it exists
         if (nameLandingPage) {
@@ -219,6 +209,7 @@ const BlackHoleComp = () => {
       const axesHelper = new THREE.AxesHelper(5);
       scene.add(axesHelper);
       controls.enableDamping = true;
+      controls.enableRotate = false
       controls.enableZoom = false;
       controls.enablePan = false;
       controls.autoRotate = true;
@@ -250,22 +241,15 @@ const BlackHoleComp = () => {
       });
       let t: number = 0;
       let t2: number = 0;
-      let starIteration: number = 0;
-      if (spaceBackground) {
-        for (let i = 0; i < 100; i++) {
-          let star = new Star();
-          star.star.position.setX(star.positionX);
-          star.star.position.setY(star.positionY);
-          star.star.position.setZ(star.positionZ);
-          stars.push(star);
-          scene.add(stars[i].star);
-        }
-        const starAnimation = () => {
-          window.requestAnimationFrame(starAnimation);
-
-          starIteration += 0.1;
-        };
+      for (let i = 0; i < 100; i++) {
+        let star = new Star();
+        star.star.position.setX(star.positionX);
+        star.star.position.setY(star.positionY);
+        star.star.position.setZ(star.positionZ);
+        stars.push(star);
+        scene.add(stars[i].star);
       }
+
       const loop = () => {
         window.requestAnimationFrame(loop);
 

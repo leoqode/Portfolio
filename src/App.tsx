@@ -1,6 +1,8 @@
 import Header from "./components/HeaderComponents/Header";
 import LandingMain from "./components/LandingComponents/LandingMain";
 import BlackHoleComp from "./components/AlwaysHatedLamePorfolios/BlackHoleLetterAnimation";
+import AboutmeComponent from "./components/AlwaysHatedLamePorfolios/AboutmeComponent";
+import TechStackComponent from "./components/AlwaysHatedLamePorfolios/TechStackComponent";
 import "./App.css";
 
 function App() {
@@ -12,12 +14,12 @@ function App() {
       <div className='intro'>
         <LandingMain></LandingMain>
       </div>
-      <BlackHoleComp/>
-      <div style={{height:'400px'}}>
-        <h1 style={{color:'white'}}>
-
-        Hello
-        </h1>
+      <BlackHoleComp />
+      <div className='mid-body-div'>
+        <AboutmeComponent />
+        <div className='tech-stack-visual-div'>
+          <TechStackComponent />
+        </div>
       </div>
     </div>
   );

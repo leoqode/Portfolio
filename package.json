@@ -10,14 +10,17 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@emotion/react": "^11.11.1",
     "@tweenjs/tween.js": "^21.0.0",
     "@types/jquery": "^3.5.16",
     "axios": "^1.4.0",
     "node": "^20.2.0",
     "node.js": "^0.0.1-security",
     "react": "^18.2.0",
+    "react-awesome-reveal": "^4.2.4",
     "react-dom": "^18.2.0",
     "react-router-dom": "^6.12.1",
+    "scrollreveal": "^4.0.9",
     "swr": "^2.1.5",
     "three": "^0.153.0",
     "tween.js": "^16.6.0"

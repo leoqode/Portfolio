@@ -1,11 +1,12 @@
 import { useEffect, useReducer, useState } from "react";
 import newMapToPng from "./WeatherCodes";
+import config from '/Users/angeljimenez/Portfolio/config.ts'
 import axios from "axios";
 
 const date = new Date();
 
 const postWeatherURL = "https://api.tomorrow.io/v4/timelines";
-const apiKey = "XqcA1V7gG3blEcKCq8nEFNXjDzsBqqSR";
+const apiKey = config.apiKey;
 const location = [42.63496561409271, -73.68988401705542];
 const timesteps = ["1d"];
 const startTime = date.toISOString();
