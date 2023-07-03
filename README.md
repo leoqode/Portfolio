@@ -34,7 +34,10 @@ While there is more content to be added, I am continuously improving and refinin
 
 ## Showcase - [IN PROGRESS]
 
-https://github.com/leoqode/Portfolio/assets/110212614/799d8c14-6e84-4cb5-8cde-1b9215032653
+
+
+https://github.com/leoqode/Portfolio/assets/110212614/2de31628-0d3f-477d-b886-e91485629824
+
 
 
 
