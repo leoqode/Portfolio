@@ -1,13 +1,12 @@
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import * as THREE from "three";
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
-import "./BlackHoleLetterAnimation.css";
 import "./BlackHoleLetterAnimation.css";
 
 const BlackHoleComp = () => {
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
-
-  //STARS CLASS ---------------------->
+  const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
+  const [hoveredMesh, setHoveredMesh] = useState<string | null>(null);
 
   class Star {
     public positionX: number;
@@ -17,277 +16,324 @@ const BlackHoleComp = () => {
     private shape: THREE.SphereGeometry;
     private material: THREE.MeshBasicMaterial;
 
-
     constructor() {
-      this.positionX = Math.floor(Math.random() * 50 - 25);
-      this.positionY = Math.floor(Math.random() * 50 - 25);
-      this.positionZ = Math.floor(Math.random() * 50 - 25);
-      this.shape = new THREE.SphereGeometry(0.1, 32, 32);
+      this.positionX = Math.random() * 400 - 200;
+      this.positionY = Math.random() * 400 - 200;
+      this.positionZ = Math.random() * 400 - 200;
+      this.shape = new THREE.SphereGeometry(0.2, 32, 32);
       this.material = new THREE.MeshBasicMaterial({ color: 0xffffff });
       this.star = new THREE.Mesh(this.shape, this.material);
-    }
-
-    update(): void {
-      if (!this.isInBounds()) {
-        this.createRandomPosition();
-      }
-    }
-
-    private isInBounds(): boolean {
-      if (
-        this.positionX > 50 ||
-        this.positionX < -50 ||
-        this.positionY > 50 ||
-        this.positionY < -50 ||
-        this.positionZ > 50 ||
-        this.positionZ < -50
-      ) {
-        return false;
-      } else {
-        return true;
-      }
-    }
-    private createRandomPosition() {
-      let x = Math.random() * window.innerHeight;
-      let y = Math.random() * window.innerWidth;
-      let z = Math.random() * Math.sqrt(window.innerWidth);
-
-      this.positionX = x;
-      this.positionY = y;
-      this.positionZ = z;
+      this.star.position.set(this.positionX, this.positionY, this.positionZ);
     }
   }
 
   useEffect(() => {
     let stars: Array<Star> = [];
     if (canvasRef.current) {
-      const sizes = {
-        width: window.innerWidth,
-        height: window.innerHeight,
-      };
-
       const scene = new THREE.Scene();
       const initialColor = new THREE.Color("#afcaad");
       scene.background = initialColor;
 
       const camera = new THREE.PerspectiveCamera(
-        20,
+        75,
         window.innerWidth / window.innerHeight,
         0.1,
         1000
       );
-      camera.position.z = 40;
-      camera.position.y = -100;
-      camera.position.x = 20;
-      scene.add(camera);
+      camera.position.z = 50;
+      camera.position.y = 0;
+      camera.position.x = 0;
 
-      // Store the initial camera position outside the handleScroll function
-      const initialCameraPosition = camera.position.clone();
-
-      const maxDisplacement = 100;
-
-      const handleScroll = () => {
-        const scrollProgress = window.scrollY / 150; // Calculate the scroll progress as a value between 0 and 1
-
-        // Limit the scroll progress to a range between 0 and 1
-        const clampedScrollProgress = Math.min(Math.max(scrollProgress, 0), 10);
-
-        const transitionColor = new THREE.Color().lerpColors(
-          initialColor,
-          new THREE.Color(0, 0, 0),
-          clampedScrollProgress
-        );
-
-        scene.background = transitionColor;
-        document.body.style.backgroundColor = transitionColor.getStyle(); // Set body background color
-
-        const nameLandingPage = document.getElementById("landing_name_intro");
-        const greetingLandingPage = document.getElementById("landing_p_intro");
-
-        if (nameLandingPage && greetingLandingPage) {
-          const textColor = new THREE.Color().lerpColors(
-            new THREE.Color(0, 0, 0),
-            new THREE.Color(1, 1, 1),
-            clampedScrollProgress
-          );
-          nameLandingPage.style.color = textColor.getStyle();
-          greetingLandingPage.style.color = textColor.getStyle();
-        }
-
-        // Calculate the new position of the camera based on scroll progress and screen size
-        let newX =
-          initialCameraPosition.x -
-          clampedScrollProgress * 6 * (window.innerWidth / window.innerHeight);
-        const newY =
-          initialCameraPosition.y -
-          clampedScrollProgress * (window.innerWidth / window.innerHeight);
-        const newZ = initialCameraPosition.z;
-
-        // Calculate the desired position of the div based on scroll progress and window dimensions
-        const desiredX = window.innerWidth / 6; // X coordinate relative to the window width
-        const desiredY = window.innerHeight * 0.1; // Y coordinate relative to the window height
-
-        // Calculate the translation amount based on the initial position and desired position
-        const translateX = desiredX * scrollProgress;
-        const translateY = desiredY * scrollProgress;
-
-        // Apply the translation to the div if it exists
-        if (nameLandingPage) {
-          nameLandingPage.style.transform = `translate(${-translateX}px, ${translateY}px)`;
-        }
-
-        const displacementOrbit = newX - initialCameraPosition.x;
-
-        if (displacementOrbit > maxDisplacement) {
-          newX = displacementOrbit - initialCameraPosition.x;
-        }
-
-        camera.position.set(newX, newY, newZ);
-      };
-
-      // Add event listener for window resize
-
-      // Call handleScroll initially to set the initial positions
-      handleScroll();
-
-      window.addEventListener("scroll", handleScroll);
-
-      const sphere = new THREE.SphereGeometry(4, 64, 64);
-      const sphereMaterial = new THREE.MeshStandardMaterial({
-        color: "#ffffff",
-        roughness: 1,
-        metalness: -0.3,
+      const renderer = new THREE.WebGLRenderer({
+        canvas: canvasRef.current,
+        antialias: true,
       });
+      renderer.setSize(window.innerWidth, window.innerHeight);
+      renderer.setPixelRatio(window.devicePixelRatio);
 
-      const mesh = new THREE.Mesh(sphere, sphereMaterial);
-      scene.add(mesh);
+      const blackHoleGroup = new THREE.Group();
+      scene.add(blackHoleGroup);
+
+      const blackHoleRadius = 4;
+      const blackHoleSegments = 64;
+      const blackHoleGeometry = new THREE.SphereGeometry(
+        blackHoleRadius,
+        blackHoleSegments,
+        blackHoleSegments
+      );
+      const blackHoleMaterial = new THREE.ShaderMaterial({
+        uniforms: {
+          time: { value: 0 },
+        },
+        vertexShader: `
+          varying vec2 vUv;
+          void main() {
+            vUv = uv;
+            gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
+          }
+        `,
+        fragmentShader: `
+          uniform float time;
+          varying vec2 vUv;
+          void main() {
+            vec2 center = vec2(0.5, 0.5);
+            float dist = distance(vUv, center);
+            float alpha = smoothstep(0.5, 0.2, dist);
+            vec3 color = mix(vec3(0.0), vec3(0.5, 0.0, 0.5), smoothstep(0.2, 0.5, dist));
+            color += 0.05 * sin(dist * 50.0 - time * 2.0);
+            gl_FragColor = vec4(color, alpha);
+          }
+        `,
+        transparent: true,
+      });
+      const blackHole = new THREE.Mesh(blackHoleGeometry, blackHoleMaterial);
+      blackHoleGroup.add(blackHole);
+
+      const diskGeometry = new THREE.RingGeometry(
+        blackHoleRadius,
+        blackHoleRadius * 3,
+        64
+      );
+      const diskMaterial = new THREE.ShaderMaterial({
+        uniforms: {
+          time: { value: 0 },
+        },
+        vertexShader: `
+          varying vec2 vUv;
+          void main() {
+            vUv = uv;
+            gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
+          }
+        `,
+        fragmentShader: `
+          uniform float time;
+          varying vec2 vUv;
+      
+          float noise(vec2 st) {
+            return fract(sin(dot(st.xy, vec2(12.9898,78.233))) * 43758.5453123);
+          }
+      
+          void main() {
+            float angle = atan(vUv.y - 0.5, vUv.x - 0.5);
+            float dist = distance(vUv, vec2(0.5));
+            
+            vec3 baseColor = mix(vec3(0.1, 0.05, 0.3), vec3(0.7, 0.3, 0.1), smoothstep(0.33, 0.47, dist));
+            
+            float noiseValue = noise(vUv * 10.0 + time * 0.1);
+            baseColor += noiseValue * 0.1;
+            
+            baseColor += 0.05 * sin(dist * 30.0 - time + angle * 5.0);
+      
+            float alpha = smoothstep(0.33, 0.35, dist) * (1.0 - smoothstep(0.45, 0.47, dist));
+            
+            float glow = exp(-dist * 5.0) * 0.2;
+            baseColor += vec3(glow);
+      
+            gl_FragColor = vec4(baseColor, alpha);
+          }
+        `,
+        side: THREE.DoubleSide,
+        transparent: true,
+        blending: THREE.AdditiveBlending,
+      });
+      const accretionDisk = new THREE.Mesh(diskGeometry, diskMaterial);
+      accretionDisk.rotation.x = Math.PI / 4;
+      blackHoleGroup.add(accretionDisk);
 
       const linkedInTexture = new THREE.TextureLoader().load(
         "./src/assets/linkedInOrbit.png"
       );
-      const linkedIn = new THREE.BoxGeometry(1, 1, 1);
+      const linkedIn = new THREE.BoxGeometry(2, 2, 2);
       const materialLinkedIn = new THREE.MeshBasicMaterial({
         map: linkedInTexture,
       });
       const linkedInCube = new THREE.Mesh(linkedIn, materialLinkedIn);
+      linkedInCube.name = "linkedin";
+      linkedInCube.position.set(-10, 0, 0); // Fixed position on the left
       scene.add(linkedInCube);
 
       const githubTexture = new THREE.TextureLoader().load(
         "./src/assets/githubOrbit.png"
       );
-      const githubBox = new THREE.BoxGeometry(1, 1, 1);
+      const githubBox = new THREE.BoxGeometry(2, 2, 2);
       const githubMaterial = new THREE.MeshBasicMaterial({
         map: githubTexture,
       });
       const githubMesh = new THREE.Mesh(githubBox, githubMaterial);
+      githubMesh.name = "github";
+      githubMesh.position.set(10, 0, 0); 
       scene.add(githubMesh);
+      blackHoleGroup.add(githubMesh);
+      blackHoleGroup.add(linkedInCube);
 
-      const directionalLight = new THREE.DirectionalLight(0xffffff, 1); // Set light color to white (0xffffff) and intensity to 1
-      directionalLight.position.set(0, 1, 0); // Set position to shine from above (0, 1, 0)
+      blackHoleGroup.position.y = -13; 
+
+      for (let i = 0; i < 2000; i++) {
+        let star = new Star();
+        stars.push(star);
+        scene.add(star.star);
+      }
+
+      const ambientLight = new THREE.AmbientLight(0xffffff, 0.5);
+      scene.add(ambientLight);
+
+      const directionalLight = new THREE.DirectionalLight(0xffffff, 0.5);
+      directionalLight.position.set(0, 1, 0);
       scene.add(directionalLight);
 
-      const geometryRing = new THREE.RingGeometry(10.1, 10.2, 32);
-      const materialRing = new THREE.MeshBasicMaterial({
-        color: 0xfffff,
-        side: THREE.DoubleSide,
-      });
-      const meshRing = new THREE.Mesh(geometryRing, materialRing);
-
-      const geometryRing2 = new THREE.RingGeometry(5.1, 5.2, 32);
-      const materialRing2 = new THREE.MeshBasicMaterial({
-        color: 0xfffff,
-        side: THREE.DoubleSide,
-      });
-      const meshRing2 = new THREE.Mesh(geometryRing2, materialRing2);
-      scene.add(meshRing);
-      scene.add(meshRing2);
-
-      const renderer = new THREE.WebGLRenderer({ canvas: canvasRef.current });
-      renderer.setSize(window.innerWidth, window.innerHeight);
-      renderer.render(scene, camera);
       const controls = new OrbitControls(camera, canvasRef.current);
-      const axesHelper = new THREE.AxesHelper(5);
-      scene.add(axesHelper);
       controls.enableDamping = true;
-      controls.enableRotate = false
+      controls.enableRotate = true;
       controls.enableZoom = false;
       controls.enablePan = false;
       controls.autoRotate = true;
-      controls.rotateSpeed = 5;
+      controls.autoRotateSpeed = 0.5;
 
-      //grid helper---------------------------
-      {
-        /*
-        
-      const size = 40;
+      let scrollProgress = 0;
+      let time = 0;
 
-      const divisions = 40;
+      const handleScroll = () => {
+        scrollProgress =
+          window.scrollY / (document.documentElement.scrollHeight - window.innerHeight);
+        scrollProgress = Math.min(Math.max(scrollProgress, 0), 1);
+        const backGroundScroll = Math.min(scrollProgress * 2, 1);
 
-      const gridHelper = new THREE.GridHelper(size, divisions);
-      scene.add(gridHelper);
-    
-      */
-      }
-      //grid helper---------------------------
+        const transitionColor = new THREE.Color().lerpColors(
+          initialColor,
+          new THREE.Color(0, 0, 0),
+          backGroundScroll
+        );
+        scene.background = transitionColor;
+        document.body.style.backgroundColor = transitionColor.getStyle();
 
-      window.addEventListener("resize", () => {
-        sizes.width = window.innerWidth;
-        sizes.height = window.innerHeight;
-
-        camera.aspect = sizes.width / sizes.height;
-        camera.updateProjectionMatrix();
-        renderer.setSize(sizes.width, sizes.height);
-        renderer.setPixelRatio(2);
-      });
-      let t: number = 0;
-      let t2: number = 0;
-      for (let i = 0; i < 100; i++) {
-        let star = new Star();
-        star.star.position.setX(star.positionX);
-        star.star.position.setY(star.positionY);
-        star.star.position.setZ(star.positionZ);
-        stars.push(star);
-        scene.add(stars[i].star);
-      }
-
-      const loop = () => {
-        window.requestAnimationFrame(loop);
-
-        t += 0.01;
-        t2 -= 0.019;
-
-        for (let i = 0; i < stars.length; i++) {
-          let star = stars[i];
-          star.positionZ += i / 15;
-          star.star.position.setZ(star.positionZ);
-          if (star.positionZ > 50) {
-            star.positionZ -= 1000;
-            star.star.position.setZ(star.positionZ);
-          }
+        const nameLandingPage = document.getElementById("landing_name_intro");
+        const greetingLandingPage = document.getElementById("landing_p_intro");
+        if (nameLandingPage && greetingLandingPage) {
+          const textColor = new THREE.Color().lerpColors(
+            new THREE.Color(0, 0, 0),
+            new THREE.Color(1, 1, 1),
+            backGroundScroll
+          );
+          nameLandingPage.style.color = textColor.getStyle();
+          greetingLandingPage.style.color = textColor.getStyle();
         }
+      };
+      const updateObjectPositions = (progress: number) => {
+        const maxRightPosition = window.innerWidth / 8;
+        const targetX = progress * maxRightPosition;
+        blackHoleGroup.position.x = targetX;
+      
+        linkedInCube.position.x = -10 - progress * 20;
+        githubMesh.position.x = 10 + progress * 20;
+      };
 
-        linkedInCube.rotation.y += 0.01;
-        githubMesh.rotation.y += 0.01;
+      const onWindowResize = () => {
+        camera.aspect = window.innerWidth / window.innerHeight;
+        camera.updateProjectionMatrix();
+        renderer.setSize(window.innerWidth, window.innerHeight);
+      
+        updateObjectPositions(scrollProgress);
+      };
+      
+      window.addEventListener("scroll", handleScroll, { passive: true });
+      window.addEventListener("resize", onWindowResize);
 
-        meshRing.rotation.y -= 0.01;
-        meshRing2.rotation.y += 0.019;
+      const raycaster = new THREE.Raycaster();
+      const mouse = new THREE.Vector2();
 
-        githubMesh.position.x = 10 * Math.cos(t) + 0;
-        githubMesh.position.z = 10 * Math.sin(t) + 0;
+      const onMouseMove = (event: MouseEvent) => {
+        mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
+        mouse.y = -(event.clientY / window.innerHeight) * 2 + 1;
+        setMousePosition({ x: event.clientX, y: event.clientY });
+      };
 
-        linkedInCube.position.x = 5 * Math.cos(t2) + 0;
-        linkedInCube.position.z = 5 * Math.sin(t2) + 0;
+      const onClick = () => {
+        if (hoveredMesh === "linkedin") {
+          window.open("https://www.linkedin.com/in/leonardojim", "_blank");
+        } else if (hoveredMesh === "github") {
+          window.open("https://www.github.com/leoqode", "_blank");
+        }
+      };
 
+      window.addEventListener("mousemove", onMouseMove);
+      window.addEventListener("click", onClick);
+
+      const animate = () => {
+        requestAnimationFrame(animate);
+      
+        time += 0.01;
+      
+        (blackHoleMaterial as THREE.ShaderMaterial).uniforms.time.value = time;
+        (diskMaterial as THREE.ShaderMaterial).uniforms.time.value = time;
+      
+        const scale = Math.max(1 - scrollProgress * 0.5, 0.5);
+        blackHole.scale.set(scale, scale, scale);
+        accretionDisk.scale.set(scale, scale, scale);
+      
+        const rotationSpeed = 0.005;
+        accretionDisk.rotation.z += rotationSpeed * 2;
+      
+        updateObjectPositions(scrollProgress);
+        accretionDisk.rotation.z += rotationSpeed * 2;
+      
+        const maxRightPosition = window.innerWidth / 8;
+        const targetX = scrollProgress * maxRightPosition;
+        blackHoleGroup.position.x += (targetX - blackHoleGroup.position.x) * 0.05;
+      
+        linkedInCube.position.x = -10 - scrollProgress * 20;
+        githubMesh.position.x = 10 + scrollProgress * 20;
+      
+        raycaster.setFromCamera(mouse, camera);
+        const intersects = raycaster.intersectObjects([linkedInCube, githubMesh]);
+      
+        if (intersects.length > 0) {
+          const intersectedObject = intersects[0].object;
+          setHoveredMesh(intersectedObject.name);
+          intersectedObject.scale.lerp(new THREE.Vector3(1.2, 1.2, 1.2), 0.1);
+          document.body.style.cursor = "pointer";
+        } else {
+          setHoveredMesh(null);
+          document.body.style.cursor = "default";
+          linkedInCube.scale.lerp(new THREE.Vector3(1, 1, 1), 0.1);
+          githubMesh.scale.lerp(new THREE.Vector3(1, 1, 1), 0.1);
+        }
+      
+        controls.update();
         renderer.render(scene, camera);
       };
-      loop();
+      
+      animate();
+
       return () => {
         window.removeEventListener("scroll", handleScroll);
+        window.removeEventListener("resize", onWindowResize);
+        window.removeEventListener("mousemove", onMouseMove);
+        window.removeEventListener("click", onClick);
       };
     }
   }, []);
 
-  return <canvas ref={canvasRef} className='webgl' />;
+  return (
+    <>
+      <canvas ref={canvasRef} className="webgl" />
+      {hoveredMesh && (
+        <div
+          style={{
+            position: "absolute",
+            left: mousePosition.x + 10,
+            top: mousePosition.y + 10,
+            background: "rgba(0, 0, 0, 0.7)",
+            color: "white",
+            padding: "5px 10px",
+            borderRadius: "5px",
+            pointerEvents: "none",
+          }}
+        >
+          {hoveredMesh === "linkedin" ? "Visit LinkedIn" : "Visit GitHub"}
+        </div>
+      )}
+    </>
+  );
 };
 
 export default BlackHoleComp;

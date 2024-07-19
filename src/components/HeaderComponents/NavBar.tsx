@@ -1,23 +1,28 @@
+import React from 'react';
 import "./NavBar.css";
 
 export interface Props {
   itemStyle: string;
-  navStyle: string
+  navStyle: string;
 }
 
 const navBarList: Array<string> = [
-  "Linked In",
-  "Github",
+  "LinkedIn",
+  "GitHub",
   "Projects",
   "Resume",
 ];
 
-const NavBar = (props: Props) => {
+const NavBar: React.FC<Props> = ({ itemStyle, navStyle }) => {
   return (
-    <div className={props.navStyle}>
-    {navBarList.map((page,index) => <h1 key={`${index}_nav`} className={props.itemStyle}> {page} </h1>)}
-    </div>
-    )
+    <nav className={navStyle}>
+      {navBarList.map((page, index) => (
+        <a key={`${index}_nav`} className={itemStyle} href={`#${page.toLowerCase()}`}>
+          {page}
+        </a>
+      ))}
+    </nav>
+  );
 };
 
 export default NavBar;

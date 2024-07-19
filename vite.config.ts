@@ -1,7 +1,16 @@
-import { defineConfig } from 'vite'
-import react from '@vitejs/plugin-react-swc'
+import { defineConfig } from 'vite';
+import react from '@vitejs/plugin-react-swc';
+import dotenv from 'dotenv';
+import path from 'path';
 
-// https://vitejs.dev/config/
+// Load environment variables from .env file
+dotenv.config({ path: path.resolve(__dirname, '.env') });
+
 export default defineConfig({
   plugins: [react()],
-})
+  define: {
+    'process.env': {
+      VITE_API_KEY: process.env.VITE_API_KEY
+    }
+  }
+});

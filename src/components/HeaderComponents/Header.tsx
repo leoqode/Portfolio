@@ -1,3 +1,4 @@
+import React from 'react';
 import DateComponent from "./DateComponent";
 import LocationComponent from "./LocationComponent";
 import NavBar from "./NavBar";
@@ -6,16 +7,16 @@ import "./Header.css";
 export interface Props {
   style: string;
 }
-const Header = (props: Props) => {
+
+const Header: React.FC<Props> = ({ style }) => {
   return (
-    <div className={props.style}>
-      <DateComponent id='header_date_cmp' headerStyle='header-cmps' />
-      <LocationComponent
-        weatherID='header_name_weather'
-        headerStyle='header-cmps'
-      />
-      <NavBar navStyle="header-nav-bar" itemStyle="header-nav-items" />
-    </div>
+    <header className={style}>
+      <div className="header-left">
+        <DateComponent id='header_date_cmp' headerStyle='header-cmps' />
+        <LocationComponent weatherID='header_weather' headerStyle='header-cmps' />
+      </div>
+      <NavBar navStyle="header-nav" itemStyle="header-nav-item" />
+    </header>
   );
 };
 

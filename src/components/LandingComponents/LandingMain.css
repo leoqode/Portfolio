@@ -1,12 +1,15 @@
+@import url('https://fonts.googleapis.com/css2?family=Rasa:wght@300;400;500;600&display=swap');
+
 .landing-main {
   display: flex;
   align-items: center;
   color: #333;
   position: relative;
-  font-family: 'Rasa' ;
+  font-family: 'Rasa', serif;
   flex-direction: column;
-  min-height: 500px;
+  height: 100vh;
   min-width: 400px;
+  justify-content: center;
 }
 
 #landing_name_intro {
@@ -14,19 +17,71 @@
   position: relative;
   margin-top: 15px;
   font-size: 150px;
+  font-weight: 600;
 }
 
 #landing_p_intro {
   margin-bottom: 0px;
   position: relative;
-
+  font-size: 24px;
 }
 
-#landing_bio_intro {
-  position: absolute;
-  bottom: 200px;
+.landing-name-wrapper {
+  overflow: hidden;
 }
 
-#black_hole_animation{
-  margin-left: 50%;
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.letter-0, .letter-1, .letter-2, .letter-3, .letter-4, .letter-5, .letter-6, .letter-7 {
+  position: relative;
+  display: inline-block;
+  animation: fadeInUp 0.5s forwards;
+  opacity: 0;
+}
+
+.letter-0 { animation-delay: 0.1s; }
+.letter-1 { animation-delay: 0.2s; }
+.letter-2 { animation-delay: 0.3s; }
+.letter-3 { animation-delay: 0.4s; }
+.letter-4 { animation-delay: 0.5s; }
+.letter-5 { animation-delay: 0.6s; }
+.letter-6 { animation-delay: 0.7s; }
+.letter-7 { animation-delay: 0.8s; }
+
+@keyframes wave {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-20px); }
+}
+
+.anim-letter-0, .anim-letter-1, .anim-letter-2, .anim-letter-3, .anim-letter-4, .anim-letter-5, .anim-letter-6, .anim-letter-7 {
+  display: inline-block;
+  animation: wave 1s infinite;
+}
+
+.anim-letter-0 { animation-delay: 0s; }
+.anim-letter-1 { animation-delay: 0.1s; }
+.anim-letter-2 { animation-delay: 0.2s; }
+.anim-letter-3 { animation-delay: 0.3s; }
+.anim-letter-4 { animation-delay: 0.4s; }
+.anim-letter-5 { animation-delay: 0.5s; }
+.anim-letter-6 { animation-delay: 0.6s; }
+.anim-letter-7 { animation-delay: 0.7s; }
+
+@media (max-width: 768px) {
+  #landing_name_intro {
+    font-size: 100px;
+  }
+
+  #landing_p_intro {
+    font-size: 20px;
+  }
 }

@@ -1,14 +1,17 @@
-.header-nav-items{
-  font-size: 12px;
-  letter-spacing: .3px;
-  list-style: none;
-  margin:0px 5px 0px 10px; 
-
-}
-.header-nav-bar{
+.header-nav {
   display: flex;
-  position: absolute;
   align-items: center;
-  right:0%;
-  bottom: 15.462px;
+  gap: 20px;
+}
+
+.header-nav-item {
+  font-size: 14px;
+  letter-spacing: 0.5px;
+  text-decoration: none;
+  color: inherit;
+  transition: color 0.3s ease;
+}
+
+.header-nav-item:hover {
+  color: #ff9a9e;
 }

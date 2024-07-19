@@ -1,6 +1,6 @@
 import { useEffect, useReducer, useState } from "react";
 import newMapToPng from "./WeatherCodes";
-import config from '/Users/angeljimenez/Portfolio/config.ts'
+import config from '../../../config'
 import axios from "axios";
 
 const date = new Date();
