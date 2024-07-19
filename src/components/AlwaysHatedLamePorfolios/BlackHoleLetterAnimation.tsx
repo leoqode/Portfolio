@@ -149,7 +149,7 @@ const BlackHoleComp = () => {
       });
       const linkedInCube = new THREE.Mesh(linkedIn, materialLinkedIn);
       linkedInCube.name = "linkedin";
-      linkedInCube.position.set(-10, 0, 0); // Fixed position on the left
+      linkedInCube.position.set(-10, 0, 0);
       scene.add(linkedInCube);
 
       const githubTexture = new THREE.TextureLoader().load(
@@ -196,7 +196,7 @@ const BlackHoleComp = () => {
         scrollProgress =
           window.scrollY / (document.documentElement.scrollHeight - window.innerHeight);
         scrollProgress = Math.min(Math.max(scrollProgress, 0), 1);
-        const backGroundScroll = Math.min(scrollProgress * 2, 1);
+        const backGroundScroll = Math.min(scrollProgress * 2.4, 1);
 
         const transitionColor = new THREE.Color().lerpColors(
           initialColor,
@@ -249,9 +249,9 @@ const BlackHoleComp = () => {
 
       const onClick = () => {
         if (hoveredMesh === "linkedin") {
-          window.open("https://www.linkedin.com/in/leonardojim", "_blank");
+          window.open("https://www.linkedin.com", "_blank");
         } else if (hoveredMesh === "github") {
-          window.open("https://www.github.com/leoqode", "_blank");
+          window.open("https://www.github.com", "_blank");
         }
       };
 
