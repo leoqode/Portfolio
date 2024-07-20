@@ -2,13 +2,13 @@ import React, { useEffect, useReducer, useState } from "react";
 import axios from "axios";
 import { MapPin, Thermometer } from 'lucide-react';
 import newMapToPng from "./WeatherCodes";
-import config from '../../../config';
 import "./LocationComponent.css";
+
 
 const date = new Date();
 
 const postWeatherURL = "https://api.tomorrow.io/v4/timelines";
-const apiKey = config.apiKey;
+const apiKey = import.meta.env.VITE_API_KEY;
 const location = [42.63496561409271, -73.68988401705542];
 const timesteps = ["1d"];
 const startTime = date.toISOString();
