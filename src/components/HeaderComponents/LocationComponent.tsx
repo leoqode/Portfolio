@@ -1,7 +1,9 @@
-import { useEffect, useReducer, useState } from "react";
-import newMapToPng from "./WeatherCodes";
-import config from '../../../config'
+import React, { useEffect, useReducer, useState } from "react";
 import axios from "axios";
+import { MapPin, Thermometer } from 'lucide-react';
+import newMapToPng from "./WeatherCodes";
+import config from '../../../config';
+import "./LocationComponent.css";
 
 const date = new Date();
 
@@ -12,54 +14,57 @@ const timesteps = ["1d"];
 const startTime = date.toISOString();
 
 export interface Props {
-  headerStyle: string;
   weatherID: string;
 }
 
-function reducer(state: object, action: {type: string; payload?: any}) {
+interface WeatherState {
+  weatherCode: number;
+}
+
+type WeatherAction = 
+  | { type: "SET_WEATHER_CODE"; payload: number }
+  | { type: "RESET" };
+
+function reducer(state: WeatherState, action: WeatherAction): WeatherState {
   switch (action.type) {
     case "SET_WEATHER_CODE":
       return {
         ...state,
         weatherCode: action.payload,
       };
-    default:
+    case "RESET":
       return { weatherCode: 0 };
+    default:
+      return state;
   }
 }
 
-const LocationComponent = (props: Props) => {
-  const [data, setData] = useState(null);
-  const [weatherStatus, setWeatherStatus] = useReducer(reducer, {
-    weatherCode: 0,
-  });
+const LocationComponent: React.FC<Props> = ({ weatherID }) => {
+  const [data, setData] = useState<number | null>(null);
+  const [weatherStatus, dispatch] = useReducer(reducer, { weatherCode: 0 });
   const [apiCalled, setApiCalled] = useState(false);
 
   const fetchData = async () => {
     try {
       const response = await axios.post(`${postWeatherURL}?apikey=${apiKey}`, {
         location,
-        fields: ["temperature", "weatherCodeDay", "weatherCodeNight"],
+        fields: ["temperature", "weatherCode"],
         units: "imperial",
         timesteps,
         startTime,
       });
-      setApiCalled(true)
+      setApiCalled(true);
       setData(response.data.data.timelines[0].intervals[0].values.temperature);
-      if (date.getHours() >= 7 && date.getHours() <= 19) {
-        setWeatherStatus({
-          type: "SET_WEATHER_CODE",
-          payload:
-            response.data.data.timelines[0].intervals[0].values
-              .weatherCodeNight,
-        });
-      } else {
-        setWeatherStatus({
-          type: "SET_WEATHER_CODE",
-          payload:
-            response.data.data.timelines[0].intervals[0].values.weatherCodeDay,
-        });
+      
+      let weatherCode = response.data.data.timelines[0].intervals[0].values.weatherCode;
+      const isNight = date.getHours() >= 19 || date.getHours() < 7;
+      
+      // Adjust weather code for night if necessary
+      if (isNight && weatherCode % 10000 === 0) {
+        weatherCode += 1;
       }
+
+      dispatch({ type: "SET_WEATHER_CODE", payload: weatherCode });
     } catch (error) {
       console.error("Error retrieving weather data:", error);
     }
@@ -68,28 +73,34 @@ const LocationComponent = (props: Props) => {
   useEffect(() => {
     if (!apiCalled) {
       fetchData();
-      setApiCalled(true);
     }
   }, [apiCalled]);
 
-  const getWeatherImage = (newMapToPng: Map<number, string>) => {
-    let code: number = weatherStatus.weatherCode;
-    if(code == 0 || 1){
-      code = 10010
-    }
-    return newMapToPng.get(code);
+  const getWeatherImage = (code: number): string => {
+    return newMapToPng.get(code) || '0_unknown_small.png';
   };
+
   return (
-    <>
-      <h1 id={props.weatherID} className={props.headerStyle}>
-        Leo's Current Weather: {data ? `${data + 18}` : null}
-      </h1>
-      <img
-        id='header_weather_logo'
-        src={`./src/assets/weatherAssets/${getWeatherImage(newMapToPng)}`}
-        alt='Weather'
-      />
-    </>
+    <div className="location-container">
+      <div className="location-background"></div>
+      <div id={weatherID} className="location-item">
+        <span className="location-icon"><MapPin size={18} /></span>
+        <span className="location-text">Leo's Location</span>
+      </div>
+      <div className="location-item">
+        <span className="location-icon"><Thermometer size={18} /></span>
+        <span className="location-text">
+          {data !== null ? `${Math.round(data)}°F` : 'Loading...'}
+        </span>
+      </div>
+      <div className="location-item">
+        <img
+          className="weather-icon"
+          src={`./src/assets/weatherAssets/${getWeatherImage(weatherStatus.weatherCode)}`}
+          alt='Weather'
+        />
+      </div>
+    </div>
   );
 };
 

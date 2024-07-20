@@ -3,14 +3,19 @@ import react from '@vitejs/plugin-react-swc';
 import dotenv from 'dotenv';
 import path from 'path';
 
-// Load environment variables from .env file
 dotenv.config({ path: path.resolve(__dirname, '.env') });
 
 export default defineConfig({
   plugins: [react()],
+  base: '/', 
   define: {
     'process.env': {
-      VITE_API_KEY: process.env.VITE_API_KEY
+      VITE_API_KEY: JSON.stringify(process.env.VITE_API_KEY)
     }
-  }
+  },
+  resolve: {
+    alias: {
+      '@': path.resolve(__dirname, './src'),
+    },
+  },
 });

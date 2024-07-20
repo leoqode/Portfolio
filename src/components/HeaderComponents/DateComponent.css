@@ -1,0 +1,74 @@
+.date-component {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  font-family: 'Arial', sans-serif;
+  color: #333;
+  text-align: right;
+  transition: all 0.3s ease;
+}
+
+.date {
+  font-size: 0.9em;
+  font-weight: 500;
+  margin-bottom: 2px;
+  opacity: 0.7;
+}
+
+.time {
+  font-size: 1.2em;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+}
+
+.time-part {
+  display: inline-block;
+  padding: 2px 4px;
+  margin: 0 1px;
+  background: linear-gradient(45deg, #ff9a9e 0%, #fad0c4 99%, #fad0c4 100%);
+  border-radius: 4px;
+  color: white;
+  text-shadow: 1px 1px 2px rgba(0,0,0,0.1);
+  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+  animation: pulse 1s infinite alternate;
+}
+
+@keyframes pulse {
+  from {
+    transform: scale(1);
+  }
+  to {
+    transform: scale(1.05);
+  }
+}
+
+.time-part:nth-child(2) {
+  animation-delay: 0.3s;
+}
+
+.time-part:nth-child(3) {
+  animation-delay: 0.6s;
+}
+
+.date-component:hover .time-part {
+  animation: bounce 0.5s;
+}
+
+@keyframes bounce {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-5px);
+  }
+}
+
+@media (max-width: 768px) {
+  .date-component {
+    font-size: 0.9em;
+  }
+  
+  .time {
+    font-size: 1em;
+  }
+}

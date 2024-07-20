@@ -7,6 +7,7 @@ const BlackHoleComp = () => {
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
   const [hoveredMesh, setHoveredMesh] = useState<string | null>(null);
+  const hoveredMeshRef = useRef<string | null>(null);
 
   class Star {
     public positionX: number;
@@ -161,12 +162,12 @@ const BlackHoleComp = () => {
       });
       const githubMesh = new THREE.Mesh(githubBox, githubMaterial);
       githubMesh.name = "github";
-      githubMesh.position.set(10, 0, 0); 
+      githubMesh.position.set(10, 0, 0);
       scene.add(githubMesh);
       blackHoleGroup.add(githubMesh);
       blackHoleGroup.add(linkedInCube);
 
-      blackHoleGroup.position.y = -13; 
+      blackHoleGroup.position.y = -13;
 
       for (let i = 0; i < 2000; i++) {
         let star = new Star();
@@ -194,9 +195,10 @@ const BlackHoleComp = () => {
 
       const handleScroll = () => {
         scrollProgress =
-          window.scrollY / (document.documentElement.scrollHeight - window.innerHeight);
+          window.scrollY /
+          (document.documentElement.scrollHeight - window.innerHeight);
         scrollProgress = Math.min(Math.max(scrollProgress, 0), 1);
-        const backGroundScroll = Math.min(scrollProgress * 2.4, 1);
+        const backGroundScroll = Math.min(scrollProgress * 5, 1);
 
         const transitionColor = new THREE.Color().lerpColors(
           initialColor,
@@ -218,11 +220,12 @@ const BlackHoleComp = () => {
           greetingLandingPage.style.color = textColor.getStyle();
         }
       };
+
       const updateObjectPositions = (progress: number) => {
         const maxRightPosition = window.innerWidth / 8;
         const targetX = progress * maxRightPosition;
         blackHoleGroup.position.x = targetX;
-      
+
         linkedInCube.position.x = -10 - progress * 20;
         githubMesh.position.x = 10 + progress * 20;
       };
@@ -231,10 +234,10 @@ const BlackHoleComp = () => {
         camera.aspect = window.innerWidth / window.innerHeight;
         camera.updateProjectionMatrix();
         renderer.setSize(window.innerWidth, window.innerHeight);
-      
+
         updateObjectPositions(scrollProgress);
       };
-      
+
       window.addEventListener("scroll", handleScroll, { passive: true });
       window.addEventListener("resize", onWindowResize);
 
@@ -248,60 +251,73 @@ const BlackHoleComp = () => {
       };
 
       const onClick = () => {
-        if (hoveredMesh === "linkedin") {
-          window.open("https://www.linkedin.com", "_blank");
-        } else if (hoveredMesh === "github") {
-          window.open("https://www.github.com", "_blank");
+        if (hoveredMeshRef.current === "linkedin") {
+          window.open("https://www.linkedin.com/in/leonardojim/", "_blank");
+        } else if (hoveredMeshRef.current === "github") {
+          window.open("https://www.github.com/leoqode", "_blank");
+        } else {
+          console.log("No matching hoveredMesh found.");
         }
       };
+      
 
       window.addEventListener("mousemove", onMouseMove);
       window.addEventListener("click", onClick);
 
       const animate = () => {
         requestAnimationFrame(animate);
-      
+
         time += 0.01;
-      
+
         (blackHoleMaterial as THREE.ShaderMaterial).uniforms.time.value = time;
         (diskMaterial as THREE.ShaderMaterial).uniforms.time.value = time;
-      
+
         const scale = Math.max(1 - scrollProgress * 0.5, 0.5);
         blackHole.scale.set(scale, scale, scale);
         accretionDisk.scale.set(scale, scale, scale);
-      
+
         const rotationSpeed = 0.005;
         accretionDisk.rotation.z += rotationSpeed * 2;
-      
+
         updateObjectPositions(scrollProgress);
         accretionDisk.rotation.z += rotationSpeed * 2;
-      
+
         const maxRightPosition = window.innerWidth / 8;
         const targetX = scrollProgress * maxRightPosition;
-        blackHoleGroup.position.x += (targetX - blackHoleGroup.position.x) * 0.05;
-      
+        blackHoleGroup.position.x +=
+          (targetX - blackHoleGroup.position.x) * 0.05;
+
         linkedInCube.position.x = -10 - scrollProgress * 20;
         githubMesh.position.x = 10 + scrollProgress * 20;
-      
+
         raycaster.setFromCamera(mouse, camera);
-        const intersects = raycaster.intersectObjects([linkedInCube, githubMesh]);
-      
+        const intersects = raycaster.intersectObjects([
+          linkedInCube,
+          githubMesh,
+        ]);
+
         if (intersects.length > 0) {
           const intersectedObject = intersects[0].object;
-          setHoveredMesh(intersectedObject.name);
+          if (hoveredMeshRef.current !== intersectedObject.name) {
+            hoveredMeshRef.current = intersectedObject.name;
+            setHoveredMesh(intersectedObject.name); 
+          }
           intersectedObject.scale.lerp(new THREE.Vector3(1.2, 1.2, 1.2), 0.1);
           document.body.style.cursor = "pointer";
         } else {
-          setHoveredMesh(null);
+          if (hoveredMeshRef.current !== null) {
+            hoveredMeshRef.current = null;
+            setHoveredMesh(null); 
+          }
           document.body.style.cursor = "default";
           linkedInCube.scale.lerp(new THREE.Vector3(1, 1, 1), 0.1);
           githubMesh.scale.lerp(new THREE.Vector3(1, 1, 1), 0.1);
         }
-      
+
         controls.update();
         renderer.render(scene, camera);
       };
-      
+
       animate();
 
       return () => {
@@ -315,7 +331,7 @@ const BlackHoleComp = () => {
 
   return (
     <>
-      <canvas ref={canvasRef} className="webgl" />
+      <canvas ref={canvasRef} className='webgl' />
       {hoveredMesh && (
         <div
           style={{

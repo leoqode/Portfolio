@@ -1,4 +1,8 @@
-const weatherCodes = new Map([
+type WeatherDescription = string;
+type WeatherCode = string;
+type ImageFileName = string;
+
+const weatherCodes: Map<WeatherCode, WeatherDescription> = new Map([
   ["0", "Unknown"],
   ["1000", "Clear"],
   ["1100", "Mostly Clear"],
@@ -22,28 +26,22 @@ const weatherCodes = new Map([
   ["7000", "Ice Pellets"],
   ["7101", "Ice Pellets Heavy"],
   ["7102", "Ice Pellets Light"],
-  ["8000", "tstorm"],
+  ["8000", "Thunderstorm"],
 ]);
-const newMapCodes = new Map()
 
+const newMapToPng: Map<number, ImageFileName> = new Map();
 
-for(let [key, value] of weatherCodes){
-  const number = parseInt(key);
-  newMapCodes.set(`${number * 10}`, value);
-  newMapCodes.set(`${number * 10 + 1}`, value);
+function addWeatherCode(code: WeatherCode, description: WeatherDescription): void {
+  const dayCode = parseInt(code);
+  
+  const nightCode = dayCode * 10 + 1;
+  const baseFileName = description.toLowerCase().replace(/ /g, '_');
+
+  newMapToPng.set(dayCode, `${dayCode * 10}_${baseFileName}_small.png`);
+  newMapToPng.set(nightCode, `${nightCode}_${baseFileName}_small.png`);
 }
 
-const newMapToPng = new Map()
-
-for(let [key,value] of newMapCodes){
-  let number = parseInt(key);
-  let name = value.toLowerCase().split(' ').join('_');
-  let endOfPicName = 'small.png';
-
-  let picName = [number, name, endOfPicName].join('_');
-  newMapToPng.set(number, picName);
-}
-
-
-
+weatherCodes.forEach((description, code) => {
+  addWeatherCode(code, description);
+});
 export default newMapToPng;

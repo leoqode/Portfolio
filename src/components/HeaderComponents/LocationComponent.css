@@ -1,0 +1,91 @@
+.location-container {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  padding: 3px;
+  border-radius: 20px;
+  backdrop-filter: blur(10px);
+  font-family: 'SF Pro Display', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
+  position: relative;
+  overflow: hidden;
+}
+
+.location-background {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 20px;
+  z-index: -1;
+  transition: all 0.3s ease;
+}
+
+.location-item {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 10px;
+  border-radius: 12px;
+  color: #ffffff;
+  font-size: 12px;
+  letter-spacing: 0.5px;
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.location-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 16px;
+  height: 16px;
+  transition: all 0.3s ease;
+}
+
+.location-text {
+  font-weight: 400;
+  opacity: 1;
+  transition: all 0.3s ease;
+}
+
+.weather-icon {
+  width: 16px;
+  height: 16px;
+  transition: all 0.3s ease;
+}
+
+.location-item:hover {
+  background: rgba(255, 255, 255, 0.2);
+  transform: scale(1.05);
+}
+
+.location-item:hover .location-icon,
+.location-item:hover .weather-icon {
+  transform: scale(1.1);
+}
+
+@media (max-width: 1200px) {
+  .location-container {
+    flex-direction: row;
+    justify-content: center;
+  }
+}
+
+@media (max-width: 600px) {
+  .location-text {
+    font-size: 10px;
+  }
+
+  .location-icon,
+  .weather-icon {
+    width: 14px;
+    height: 14px;
+  }
+
+  .location-item {
+    padding: 4px 8px;
+  }
+}

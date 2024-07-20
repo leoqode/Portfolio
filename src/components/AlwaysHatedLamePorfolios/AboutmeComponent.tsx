@@ -21,7 +21,7 @@ const AboutmeComponent = () => {
   return (
     <div className="about-me-container">
       <div className="about-me-section" style={{
-        opacity: Math.min(1, Math.max(0, scrollProgress * 2 - 0.5)),
+        opacity: Math.min(1, Math.max(0, scrollProgress * 2 - 0)),
         transform: `translateY(${Math.max(0, 50 - scrollProgress * 100)}px)`
       }}>
         <Fade cascade damping={0.1}>
@@ -40,10 +40,11 @@ const AboutmeComponent = () => {
           </div>
         </Fade>
       </div>
+      
 
       <div className="tech-stack-section" style={{
-        opacity: Math.min(1, Math.max(0, scrollProgress * 2 - 1)),
-        transform: `translateY(${Math.max(0, 100 - scrollProgress * 100)}px)`
+        opacity: Math.min(1, Math.max(0, scrollProgress * 2 - 0.4)),
+        transform: `translateY(${Math.max(0, 50 - scrollProgress * 100)}px)`
       }}>
         <Fade cascade damping={0.1}>
           <h2 className="tech-stack-title">Tech Stack & Achievements</h2>
@@ -65,8 +66,29 @@ const AboutmeComponent = () => {
         </Fade>
       </div>
 
+      <div className="research-section" style={{
+        opacity: Math.min(1, Math.max(0, scrollProgress * 2 - 0.75)),
+        transform: `translateY(${Math.max(0, 100 - scrollProgress * 100)}px)`
+      }}>
+        <Fade cascade damping={0.1}>
+          <h2 className="research-title">Research Interests</h2>
+          <div className="research-content">
+            <p>Currently, I am fascinated with research and actively trying to break into the field. I recently had the pleasure of working alongside Dr. Farnsworth and two other students at Texas State Problem Solvers on an intriguing mathematical problem.</p>
+            <p>Our research was for Mathematical Association of America monlthy. The question proposed was on the minimum number of unit cubes needed to satisfy specific conditions in an n-by-n-by-n cube. We discovered that this minimum is given by the formula for the n-th concentric hexagonal number. Our solution involves a geometric construction using hexagons formed by intersecting planes with the cube, resulting in a pattern of concentric hexagons of cubes.</p>
+            <a 
+              href="https://drive.google.com/file/d/1e3gvWO5sHrmooWcUDk9ZUuV1IiT-IjPo/view?usp=drive_link" 
+              target="_blank" 
+              rel="noopener noreferrer"
+              className="research-link"
+            >
+              View a draft of our paper
+            </a>
+          </div>
+        </Fade>
+      </div>
+
       <div className="projects-section" style={{
-        opacity: Math.min(1, Math.max(0, scrollProgress * 2 - 1.5)),
+        opacity: Math.min(1, Math.max(0, scrollProgress * 2 - 0.9)),
         transform: `translateY(${Math.max(0, 150 - scrollProgress * 100)}px)`
       }}>
         <Fade cascade damping={0.1}>
