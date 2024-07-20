@@ -1,8 +1,8 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import "./LandingMain.css";
 
 const LandingMain: React.FC = () => {
-  const introParText: string = "Hi! My name is...";
+  const introParText: string = ":) Hi! My name is...";
   const introNameText: string = "Leonardo";
   const [index, setIndex] = useState(0);
   const [nameIndex, setNameIndex] = useState(0);
@@ -11,6 +11,8 @@ const LandingMain: React.FC = () => {
   const [allTyped, setAllTyped] = useState(false);
 
   useEffect(() => {
+    let timeoutID: NodeJS.Timeout;
+
     const textAnimation = () => {
       setIntroParArr((prevIntroParArr) => [
         ...prevIntroParArr,
@@ -20,8 +22,7 @@ const LandingMain: React.FC = () => {
     };
 
     if (index < introParText.length) {
-      const timeoutID = setTimeout(textAnimation, 150);
-      return () => clearTimeout(timeoutID);
+      timeoutID = setTimeout(textAnimation, 150);
     } else {
       const nameAnimation = () => {
         setIntroNameArr((prevIntroNameArr) => [
@@ -31,21 +32,21 @@ const LandingMain: React.FC = () => {
         setNameIndex((prevNameIndex) => prevNameIndex + 1);
       };
 
-      if (nameIndex < introNameText.length) {
-        const timeoutID = setTimeout(nameAnimation, 400);
-        return () => clearTimeout(timeoutID);
-      } else if (nameIndex === introNameText.length) {
+      if (nameIndex - 3 <= introNameText.length) {
+        timeoutID = setTimeout(nameAnimation, 350);
+      } else if (nameIndex === introNameArr.length) {
         setAllTyped(true);
-        const timeoutID = setTimeout(() => {
+        timeoutID = setTimeout(() => {
           setIntroNameArr([]);
           setNameIndex(0);
-          setIntroParArr([":) "]);
+          setIntroParArr([]);
           setIndex(0);
           setAllTyped(false);
-        }, 9000);
-        return () => clearTimeout(timeoutID);
+        }, 7000);
       }
     }
+
+    return () => clearTimeout(timeoutID);
   }, [index, nameIndex]);
 
   const stringDisplay = introParArr.join("");
