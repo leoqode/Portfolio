@@ -7,7 +7,7 @@ dotenv.config({ path: path.resolve(__dirname, '.env') });
 
 export default defineConfig({
   plugins: [react()],
-  base: '/', 
+  base: '/',  
   define: {
     'import.meta.env.VITE_API_KEY': JSON.stringify(process.env.VITE_API_KEY)
   },
