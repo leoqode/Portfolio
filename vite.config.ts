@@ -9,13 +9,20 @@ export default defineConfig({
   plugins: [react()],
   base: '/', 
   define: {
-    'process.env': {
-      VITE_API_KEY: JSON.stringify(process.env.VITE_API_KEY)
-    }
+    'import.meta.env.VITE_API_KEY': JSON.stringify(process.env.VITE_API_KEY)
   },
   resolve: {
     alias: {
       '@': path.resolve(__dirname, './src'),
+    },
+  },
+  build: {
+    outDir: 'dist',
+    assetsDir: 'assets',
+    rollupOptions: {
+      output: {
+        manualChunks: undefined,
+      },
     },
   },
 });
