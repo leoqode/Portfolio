@@ -142,7 +142,7 @@ const BlackHoleComp = () => {
       blackHoleGroup.add(accretionDisk);
 
       const linkedInTexture = new THREE.TextureLoader().load(
-        "./src/assets/linkedInOrbit.png"
+        "/public/assets/linkedInOrbit.png"
       );
       const linkedIn = new THREE.BoxGeometry(2, 2, 2);
       const materialLinkedIn = new THREE.MeshBasicMaterial({
@@ -154,7 +154,7 @@ const BlackHoleComp = () => {
       scene.add(linkedInCube);
 
       const githubTexture = new THREE.TextureLoader().load(
-        "./src/assets/githubOrbit.png"
+        "/public/assets/githubOrbit.png"
       );
       const githubBox = new THREE.BoxGeometry(2, 2, 2);
       const githubMaterial = new THREE.MeshBasicMaterial({

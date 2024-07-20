@@ -96,7 +96,7 @@ const LocationComponent: React.FC<Props> = ({ weatherID }) => {
       <div className="location-item">
         <img
           className="weather-icon"
-          src={`./src/assets/weatherAssets/${getWeatherImage(weatherStatus.weatherCode)}`}
+          src={`/public/assets/weatherAssets/${getWeatherImage(weatherStatus.weatherCode)}`}
           alt='Weather'
         />
       </div>
