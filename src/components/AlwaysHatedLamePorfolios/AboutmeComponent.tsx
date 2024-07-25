@@ -74,7 +74,7 @@ const AboutmeComponent = () => {
           <h2 className="research-title">Research Interests</h2>
           <div className="research-content">
             <p>Currently, I am fascinated with research and actively trying to break into the field. I recently had the pleasure of working alongside Dr. Farnsworth and two other students at Texas State Problem Solvers on an intriguing mathematical problem.</p>
-            <p>Our research was for Mathematical Association of America monlthy. The question proposed was on the minimum number of unit cubes needed to satisfy specific conditions in an n-by-n-by-n cube. We discovered that this minimum is given by the formula for the n-th concentric hexagonal number. Our solution involves a geometric construction using hexagons formed by intersecting planes with the cube, resulting in a pattern of concentric hexagons of cubes.</p>
+            <p>Our research was for The American Mathematical Monthly. The question proposed was on the minimum number of unit cubes needed to satisfy specific conditions in an n-by-n-by-n cube. We discovered that this minimum is given by the formula for the n-th concentric hexagonal number. Our solution involves a geometric construction using hexagons formed by intersecting planes with the cube, resulting in a pattern of concentric hexagons of cubes.</p>
             <a 
               href="https://drive.google.com/file/d/1e3gvWO5sHrmooWcUDk9ZUuV1IiT-IjPo/view?usp=drive_link" 
               target="_blank" 
