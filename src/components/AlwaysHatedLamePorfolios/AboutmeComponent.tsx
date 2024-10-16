@@ -95,14 +95,19 @@ const AboutmeComponent = () => {
           <h2 className="projects-title">Featured Projects</h2>
           <div className="project-cards">
             <div className="project-card">
-              <h3>WhereHungry 🌭</h3>
-              <p>A solution for college students tired of eating at the same places.</p>
-              <a href="https://github.com/leoqode/WhereHungry" target="_blank" rel="noopener noreferrer">View on GitHub</a>
-            </div>
-            <div className="project-card">
               <h3>Riverhacks23</h3>
               <p>First Place Hackathon Project</p>
               <a href="https://github.com/leoqode/Riverhacks23" target="_blank" rel="noopener noreferrer">View on GitHub</a>
+            </div>
+            <div className="project-card">
+              <h3>TypeGym</h3>
+              <p> Monkeytype and TypeRacer seem to be missing something, and I think I can find it.</p>
+              <a href="https://github.com/leoqode/Riverhacks23" target="_blank" rel="noopener noreferrer">View on GitHub</a>
+            </div>
+            <div className="project-card">
+              <h3>WhereHungry 🌭</h3>
+              <p>A solution for college students tired of eating at the same places.</p>
+              <a href="https://github.com/leoqode/WhereHungry" target="_blank" rel="noopener noreferrer">View on GitHub</a>
             </div>
           </div>
         </Fade>

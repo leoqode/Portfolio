@@ -16,7 +16,6 @@ const Header: React.FC<Props> = ({ style }) => {
     { label: 'Projects', onClick: () => scrollToSection('projects-section') },
     { label: 'LinkedIn', href: 'https://linkedin.com/in/leonardojim', external: true },
     { label: 'GitHub', href: 'https://github.com/leoqode', external: true },
-    { label: 'Resume', href: 'https://drive.google.com/file/d/1STxZnriVeWDljrH90uuJmDYFOt6HStko/view?usp=drive_link', external: true },
   ];
 
   const scrollToSection = (sectionId: string) => {
