@@ -29,9 +29,7 @@ const AboutmeComponent = () => {
           <div className="about-me-content">
             <div className="about-me-text">
               <p>👋 Hi there! I'm Leonardo Jimenez, a first-generation undergraduate student at Texas State University.</p>
-              <p>🚀 My journey into Computer Science and Mathematics began with a profound moment watching "Interstellar". Since then, I've been on an exciting path of discovery and learning.</p>
-              <p>🍎 Currently, I'm working in Apple's College Program while pursuing my dual major in Computer Science and Mathematics.</p>
-              <p>🌟 I'm passionate about Deep Learning, particularly with PyTorch, and I'm always working on exciting projects like WhereHungry 🌭.</p>
+              <p>🍎 Currently, I'm working in Apple's College Program while pursuing my double major in Computer Science and Mathematics.</p>
             </div>
           </div>
           <div className="social-links">
